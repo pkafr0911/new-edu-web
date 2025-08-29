@@ -38,9 +38,10 @@ const Step2: React.FC<Props> = ({ callback }) => {
   const intl = useIntl();
 
   const [openOTP, setOpenOTP] = useState<boolean>(false);
+  const [formData, setFormData] = useState<API.LoginParams | null>(null); // store register form values
 
   const handleSubmit = async (values: API.LoginParams) => {
-    // callback('submitStep2', values);
+    setFormData(values); // keep form data
     sendOPT();
     setOpenOTP(true);
   };
@@ -77,7 +78,9 @@ const Step2: React.FC<Props> = ({ callback }) => {
       if (value.length === 6) {
         message.success('Đăng ký thành công!');
         // history.push('/user/login');
-        callback('submitStep2', null);
+        if (formData) {
+          callback('submitStep2', formData); // send form data to parent
+        }
       }
     };
 
@@ -85,15 +88,19 @@ const Step2: React.FC<Props> = ({ callback }) => {
       <Modal open={openOTP} onCancel={() => setOpenOTP(false)} footer={null}>
         <Space direction="vertical" size={24} style={{ width: '100%' }}>
           <Title level={3}>Nhập mã OTP</Title>
+          <Text strong>Vui lòng nhập mã đã được gửi đến email của bạn</Text>
           <Input.OTP length={6} size="large" value={otp} onChange={onChange} />
 
-          <Space direction="horizontal" style={{ justifyContent: 'center', width: '100%' }}>
+          <Space direction="horizontal">
             {canResend ? (
               <Button type="link" onClick={handleResend}>
                 Gửi lại mã
               </Button>
             ) : (
-              <Text type="secondary">Gửi lại mã sau {countdown}s</Text>
+              <Text strong>
+                {'00:'}
+                {countdown}
+              </Text>
             )}
           </Space>
         </Space>
