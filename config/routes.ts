@@ -1,0 +1,112 @@
+﻿/**
+ * @name Umi Router Configuration
+ * @description The configuration only supports path, component, routes, redirect, wrappers, name, and icon.
+ * @param path - Only supports two types of placeholders: dynamic parameters in the form of :id, and wildcard '*' which can only appear at the end of the route string.
+ * @param component - The React component path to be rendered when the location and path match. It can be an absolute path or a relative path starting from `src/pages`.
+ * @param routes - Configure sub-routes, usually used when adding a layout component to multiple paths.
+ * @param redirect - Configure route redirection.
+ * @param wrappers - Configure the wrapper components for the route, which can add additional functionality such as route-level permission checks.
+ * @param name - Configure the route's title, defaults to reading from the `menu.ts` internationalization file, e.g., `menu.login` for the title when `name` is set to `login`.
+ * @param icon - Configure the route's icon, the value is referenced from Ant Design's icon list (e.g., 'stepBackward' or 'user'). Avoid style suffixes and case variations.
+ * @doc https://umijs.org/docs/guides/routes
+ */
+export default [
+  // User-related routes, such as login
+  {
+    path: '/user',
+    layout: false, // No layout for the user-related routes
+    routes: [
+      {
+        name: 'login', // Title for the login page
+        path: '/user/login',
+        component: './Login', // Component for the login page
+      },
+      {
+        name: 'register', // Title for the register page
+        path: '/user/register',
+        component: './Register', // Component for the login page
+      },
+    ],
+  },
+
+  // Welcome page
+  {
+    path: '/welcome',
+    name: 'welcome', // Title for the welcome page
+    icon: 'smile', // Icon for the welcome page
+    component: './Welcome', // Component for the welcome page
+    // hideInMenu: true,
+  },
+
+  // Events page
+  {
+    path: '/events',
+    name: 'events', // Title for the events page
+    icon: 'calendar', // Icon for the events page
+    component: './Events/List', // Component for the events page
+    routes: [],
+  },
+  {
+    path: '/events/:id',
+    name: 'eventDetail', // Title for the events page
+    component: './Events/Detail', // Component for the events page
+    hideInMenu: true,
+  },
+
+  // Admin panel with sub-pages
+  {
+    path: '/admin',
+    name: 'admin', // Title for the admin panel
+    icon: 'crown', // Icon for the admin panel
+    access: 'admin', // Access control for the admin route
+    routes: [
+      {
+        path: '/admin',
+        redirect: '/admin/users', // Redirect to sub-page when accessing the admin path
+      },
+      {
+        path: '/admin/users',
+        name: 'users', // Title for the sub-page
+
+        component: './Admin/Users/List', // Component for the sub-page
+      },
+    ],
+  },
+  // Public
+
+  {
+    path: '/public',
+    name: 'public', // Title for the public page
+    layout: false,
+    routes: [
+      {
+        name: 'registerIframe', // Title for the register
+        path: '/public/register/iframe/:summitId/:guestTypeId',
+        component: './Public/RegisterIframe', // Component for the register
+      },
+      {
+        name: 'register', // Title for the register
+        path: '/public/register/:summitId/:guestTypeId',
+        component: './Public/Register', // Component for the register
+      },
+      {
+        name: 'confirmCheckIn', // Title for the confirmCheckIn
+        path: '/public/confirm-check-in/:summitId',
+        component: './Public/ConfirmCheckInEvent', // Component for the confirmCheckIn
+      },
+    ],
+  },
+
+  // Default redirect to the welcome page
+  {
+    path: '/',
+    redirect: '/welcome', // Redirect root path to welcome page
+  },
+
+  // Catch-all route for undefined paths, displaying a 404 page
+  {
+    path: '*',
+    layout: false, // No layout for the 404 page
+    component: './404', // Component for the 404 page
+  },
+];

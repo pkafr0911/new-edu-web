@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  # docker build --no-cache -f Dockerfile -t multicdn-check-in-web:0.1.1 .
+  multicdn-check-in-web:
+    # image: multicdn-check-in-web:0.1.1
+    image: multicdn-check-in-web
+    # restart: always
+    environment:
+      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
+      - API_ADDRESS=http://172.17.0.1:9080
+      # - API_ADDRESS=http://localhost:8000
+
+    ports:
+      - 8000:8000
+    volumes:
+      # - ./nginx/nginx_template.conf:/etc/nginx/templates/default.conf.template
+      - ./public/scripts/env.js:/usr/local/multicdn-check-in-web/scripts/env.js
+      - ./public/scripts/embed.js:/usr/local/multicdn-check-in-web/scripts/embed.js
+      - ./nginx/logs:/var/log/nginx
