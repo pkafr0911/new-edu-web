@@ -111,6 +111,12 @@ const Login: React.FC = () => {
 
       setStep(3);
     }
+
+    if (action === 'submitStep3') {
+      setSignUpData(data);
+
+      setStep(4);
+    }
   };
 
   return (

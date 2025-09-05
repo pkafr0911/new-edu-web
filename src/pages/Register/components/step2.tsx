@@ -176,7 +176,7 @@ const Step2: React.FC<Props> = ({ userType, callback }) => {
                 },
                 {
                   type: 'email',
-                  message: 'Please enter vaild email',
+                  message: 'Email sai định dạng',
                 },
               ]}
             />

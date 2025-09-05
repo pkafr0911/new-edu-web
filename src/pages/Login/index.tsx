@@ -188,6 +188,10 @@ const Login: React.FC = () => {
                       />
                     ),
                   },
+                  {
+                    type: 'email',
+                    message: 'Email sai định dạng',
+                  },
                 ]}
               />
               <ProFormText.Password

@@ -7,7 +7,6 @@ import { history } from '@umijs/max';
 import { stringify } from 'querystring';
 import { DefaultOptionType } from 'antd/es/select';
 import { IGNORE_AUTHORIZATION_PAGE } from './consants';
-import { removeLocalStorage } from './pages/Guest/service';
 
 /**
  * All functions that will be used throughout the project will be here.

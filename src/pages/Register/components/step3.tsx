@@ -2,8 +2,8 @@ import { useIntl, useModel } from '@umijs/max';
 import { Alert, Button, Card, Form, message, Progress, Space, Tabs, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { StudentStep1, StudentStep2 } from './student';
-import { CompanyStep1 } from './company';
+import { StudentStep1, StudentStep2, StudentStep3, StudentStep4 } from './student';
+import { CompanyStep1, CompanyStep2, CompanyStep3 } from './company';
 type Props = {
   userType: 'STUDENT' | 'COMPANY';
   callback: (action: string, data: any) => void;
@@ -61,8 +61,7 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
             }
           : undefined,
       );
-      setProgress(userType === 'STUDENT' ? 66 : 100);
-      nextStep();
+      setProgress(userType === 'STUDENT' ? 66 : 99);
     }
 
     if (step === 2) {
@@ -74,22 +73,16 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
             }
           : undefined,
       );
-      setProgress(100);
-      nextStep();
+      setProgress(99);
     }
 
     if (step === 3) {
-      setData((pev) =>
-        pev
-          ? {
-              ...pev,
-              ...values,
-            }
-          : undefined,
-      );
       setProgress(100);
-      nextStep();
+      // callback('submitStep3', data);
+      //TODO: call API here
     }
+
+    nextStep();
   };
 
   const onPrevious = () => {
@@ -112,9 +105,13 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
       {/* Right half (form) */}
       <div className={styles.rightForm}>
         {/* Process bar */}
-        <div style={{ marginBottom: 40 }}>
-          <Progress percent={progress} showInfo={false} />
-        </div>
+        {userType === 'STUDENT' ? (
+          step < 4
+        ) : step < 3 ? (
+          <div style={{ marginBottom: 40 }}>
+            <Progress percent={progress} showInfo={false} />
+          </div>
+        ) : null}
 
         {/* Form */}
         <div style={{ flex: 1 }}>
@@ -129,9 +126,17 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
             userType === 'STUDENT' ? (
               <StudentStep2 form={form2} onNext={onNext} onPrevious={onPrevious} />
             ) : (
-              <CompanyStep1 form={form2} onNext={onNext} />
+              <CompanyStep2 form={form2} onNext={onNext} />
             )
           ) : null}
+          {step === 3 ? (
+            userType === 'STUDENT' ? (
+              <StudentStep3 form={form3} onNext={onNext} onPrevious={onPrevious} />
+            ) : (
+              <CompanyStep3 />
+            )
+          ) : null}
+          {step === 4 ? userType === 'STUDENT' ? <StudentStep4 /> : null : null}
         </div>
       </div>
     </div>

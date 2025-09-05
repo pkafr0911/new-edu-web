@@ -34,11 +34,7 @@ export enum Action {
 }
 
 //authorization
-export const IGNORE_AUTHORIZATION_PAGE = [
-  '/user/login',
-  '/public/register',
-  '/public/confirm-check-in',
-];
+export const IGNORE_AUTHORIZATION_PAGE = ['/user/login', '/user/register'];
 
 export enum AssetKey {
   SubmiteCodeTopBanner = 'submit-code-top-banner',
