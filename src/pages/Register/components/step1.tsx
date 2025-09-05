@@ -17,7 +17,7 @@ const Step1: React.FC<Props> = ({ callback }) => {
   });
   const intl = useIntl();
 
-  const handleSubmit = (values: 'student ' | 'company') => {
+  const handleSubmit = (values: 'STUDENT' | 'COMPANY') => {
     callback('submitStep1', values);
   };
 
@@ -74,7 +74,7 @@ const Step1: React.FC<Props> = ({ callback }) => {
           <Button
             type="primary"
             style={{ marginTop: 16, width: 312, backgroundColor: '#2563EB' }}
-            onClick={() => handleSubmit('student ')}
+            onClick={() => handleSubmit('STUDENT')}
           >
             {'Đăng ký'}
           </Button>
@@ -94,7 +94,7 @@ const Step1: React.FC<Props> = ({ callback }) => {
             <Button
               type="primary"
               style={{ marginTop: 16, width: 312, backgroundColor: '#2563EB' }}
-              onClick={() => handleSubmit('company')}
+              onClick={() => handleSubmit('COMPANY')}
             >
               {'Đăng ký'}
             </Button>

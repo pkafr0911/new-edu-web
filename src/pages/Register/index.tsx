@@ -9,6 +9,7 @@ import {
   Alert,
   Button,
   Card,
+  DatePicker,
   Form,
   Input,
   message,
@@ -23,45 +24,11 @@ import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../config/defaultSettings';
 import { login } from './service';
-import { Step1, Step2 } from './components';
+import { Step1, Step2, Step3 } from './components';
 
 const { Title, Text, Link } = Typography;
 
 const useStyles = createStyles(({ token }) => ({
-  leftImage: {
-    display: 'flex',
-    height: '100vh',
-    overflow: 'hidden',
-    backgroundImage: "url('/images/register_side_image.png')",
-    backgroundSize: 'auto 100%',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'left center',
-    width: '50%',
-
-    // Hide image on small screens
-    '@media (max-width: 768px)': {
-      display: 'none',
-      width: 0,
-    },
-  },
-  rightForm: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '48px',
-    overflowY: 'auto',
-  },
-  lang: {
-    width: 42,
-    height: 42,
-    lineHeight: '42px',
-    position: 'fixed',
-    right: 16,
-    borderRadius: token.borderRadius,
-    ':hover': {
-      backgroundColor: token.colorBgTextHover,
-    },
-  },
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -71,29 +38,6 @@ const useStyles = createStyles(({ token }) => ({
     backgroundSize: '100% 100%',
   },
 }));
-
-const Lang = () => {
-  const { styles } = useStyles();
-
-  return (
-    <div className={styles.lang} data-lang>
-      {SelectLang && <SelectLang />}
-    </div>
-  );
-};
-
-const LoginMessage: React.FC<{ content: string }> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
 
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<Res<API.LoginResult>>({
@@ -108,8 +52,9 @@ const Login: React.FC = () => {
 
   //
   const [step, setStep] = useState(1);
-  const [selectedRole, setSelectedRole] = useState<'student' | 'company'>();
-  const [formData, setFormData] = useState<API.LoginParams | null>(null);
+  const [selectedUserType, setSelectedUserType] = useState<'STUDENT' | 'COMPANY'>();
+  const [signUpData, setSignUpData] = useState<API.LoginParams | null>(null);
+
   // const fetchUserInfo = (afirstst) => {
   //   const userInfo = await initialState?.fetchUserInfo?.();
   //   if (userInfo) {
@@ -157,11 +102,13 @@ const Login: React.FC = () => {
 
   const callback = (action: string, data: any) => {
     if (action === 'submitStep1') {
-      setSelectedRole(data);
+      setSelectedUserType(data);
+
       setStep(2);
     }
     if (action === 'submitStep2') {
-      setFormData(data);
+      setSignUpData(data);
+
       setStep(3);
     }
   };
@@ -193,43 +140,14 @@ const Login: React.FC = () => {
             }}
           >
             {step === 1 ? <Step1 callback={callback} /> : null}
-            {step === 2 ? <Step2 callback={callback} /> : null}
+            {step === 2 && selectedUserType ? (
+              <Step2 userType={selectedUserType} callback={callback} />
+            ) : null}
           </div>
         </div>
       ) : null}
-      {step === 3 ? (
-        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-          {/* Left half (image) */}
-          <div className={styles.leftImage}>
-            <div style={{ marginBottom: 32 }}>
-              <img alt="logo" src="/logo.svg" style={{ height: 40 }} />
-            </div>
-          </div>
-
-          {/* Right half (form) */}
-          <div className={styles.rightForm}>
-            {/* Process bar */}
-            <div style={{ marginBottom: 40 }}>
-              <Progress percent={25} showInfo={false} />
-            </div>
-
-            {/* Example form */}
-            <div style={{ flex: 1 }}>
-              <Form layout="vertical">
-                <Form.Item label="Họ và tên" name="fullname" rules={[{ required: true }]}>
-                  <Input placeholder="Nhập họ và tên" />
-                </Form.Item>
-                <Form.Item label="Ngày sinh" name="dob" rules={[{ required: true }]}>
-                  <Input placeholder="DD/MM/YYYY" />
-                </Form.Item>
-
-                <Button type="primary" htmlType="submit">
-                  Tiếp tục
-                </Button>
-              </Form>
-            </div>
-          </div>
-        </div>
+      {step === 3 && selectedUserType ? (
+        <Step3 userType={selectedUserType} callback={callback} />
       ) : null}
     </>
   );

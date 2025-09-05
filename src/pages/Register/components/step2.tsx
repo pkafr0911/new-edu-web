@@ -10,6 +10,7 @@ import { createStyles } from 'antd-style';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
+  userType: 'STUDENT' | 'COMPANY';
   callback: (action: string, data: any) => void;
 };
 
@@ -28,7 +29,7 @@ const LoginMessage: React.FC<{ content: string }> = ({ content }) => {
   );
 };
 
-const Step2: React.FC<Props> = ({ callback }) => {
+const Step2: React.FC<Props> = ({ userType, callback }) => {
   const [userLoginState, setUserLoginState] = useState<Res<API.LoginResult>>({
     code: 0,
     message: '',
@@ -47,7 +48,15 @@ const Step2: React.FC<Props> = ({ callback }) => {
   };
 
   const sendOPT = () => {
-    //TODO: send OTP code to email
+    //TODO: call api Signup
+
+    const reqData = {
+      ...formData,
+      userType,
+    };
+
+    console.log('reqData', reqData);
+
     message.success('Mã OTP đã được gửi đến email của bạn!');
   };
 
@@ -76,6 +85,13 @@ const Step2: React.FC<Props> = ({ callback }) => {
     const onChange = (value) => {
       setOtp(value);
       if (value.length === 6) {
+        //TODO: call api Verify
+
+        const reqData = {
+          email: formData?.email,
+          otpCode: otp,
+        };
+
         message.success('Đăng ký thành công!');
         // history.push('/user/login');
         if (formData) {
@@ -121,6 +137,9 @@ const Step2: React.FC<Props> = ({ callback }) => {
             maxWidth: '75vw',
           }}
           submitter={{
+            searchConfig: {
+              submitText: 'Đăng ký',
+            },
             submitButtonProps: {
               style: {
                 backgroundColor: '#2563EB',
@@ -155,6 +174,10 @@ const Step2: React.FC<Props> = ({ callback }) => {
                     />
                   ),
                 },
+                {
+                  type: 'email',
+                  message: 'Please enter vaild email',
+                },
               ]}
             />
             <ProFormText.Password
@@ -181,7 +204,7 @@ const Step2: React.FC<Props> = ({ callback }) => {
 
             <ProFormText.Password
               label="Nhập lại Mật khẩu"
-              name="password"
+              name="repeatPassword"
               fieldProps={{
                 size: 'large',
                 tabIndex: 2,
@@ -201,26 +224,6 @@ const Step2: React.FC<Props> = ({ callback }) => {
               ]}
             />
           </>
-
-          <div
-            style={{
-              marginBottom: 24,
-            }}
-          >
-            <ProFormCheckbox noStyle name="autoLogin">
-              <Text strong>
-                <FormattedMessage id="pages.login.rememberMe" defaultMessage="Ghi nhớ tài khoản" />
-              </Text>
-            </ProFormCheckbox>
-            <a
-              style={{
-                float: 'right',
-              }}
-            >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Quên mật khẩu" />
-            </a>
-          </div>
-
           {userLoginState.code !== 0 && (
             <LoginMessage
               content={intl.formatMessage({

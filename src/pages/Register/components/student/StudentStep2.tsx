@@ -4,10 +4,12 @@ import { Form, Input, Button, DatePicker, FormInstance, Select, Typography } fro
 type Props = {
   form: FormInstance;
   onNext?: (values: any) => void;
+  onPrevious?: (values: any) => void;
 };
+
 const { Title } = Typography;
 
-const StudentStep1: React.FC<Props> = ({ form, onNext }) => {
+const StudentStep2: React.FC<Props> = ({ form, onNext, onPrevious }) => {
   const handleFinish = (values: any) => {
     if (onNext) {
       onNext(values);
@@ -16,31 +18,10 @@ const StudentStep1: React.FC<Props> = ({ form, onNext }) => {
 
   return (
     <Form form={form} layout="vertical" onFinish={handleFinish}>
-      <Title level={3}>Thông tin cá nhân</Title>
+      <Title level={3}>Kinh nghiệm làm việc</Title>
       <Form.Item
-        label={<b>Họ và tên</b>}
-        name="fullname"
-        required={false}
-        rules={[{ required: true }]}
-      >
-        <Input placeholder="Nhập họ và tên" />
-      </Form.Item>
-      <Form.Item label={<b>Ngày sinh</b>} name="dob" required={false} rules={[{ required: true }]}>
-        <DatePicker showTime={false} placeholder="dd/mm/yyyy" style={{ width: '100%' }} />
-      </Form.Item>
-
-      <Form.Item
-        label={<b>Số điện thoại</b>}
-        name="phoneNumber"
-        required={false}
-        rules={[{ required: true }]}
-      >
-        <Input placeholder="Nhập số điện thoại" />
-      </Form.Item>
-
-      <Form.Item
-        label={<b>Đia điểm</b>}
-        name="location"
+        label={<b>Trường đại học</b>}
+        name={['intern', 'university']}
         required={false}
         rules={[{ required: true }]}
       >
@@ -48,12 +29,48 @@ const StudentStep1: React.FC<Props> = ({ form, onNext }) => {
           placeholder="--Chọn--"
           options={[
             {
-              label: 'Ha noi',
-              value: 'HN',
+              label: 'Black khoa',
+              value: 'bach_khoa',
             },
           ]}
         />
       </Form.Item>
+
+      <Form.Item
+        label={<b>Bằng cấp</b>}
+        name={['intern', 'degree']}
+        required={false}
+        rules={[{ required: true }]}
+      >
+        <Select
+          placeholder="--Chọn--"
+          options={[
+            {
+              label: 'cu nhan',
+              value: 'cu_nhan',
+            },
+          ]}
+        />
+      </Form.Item>
+
+      <Form.Item
+        label={<b>Ngành học</b>}
+        name={['intern', 'major']}
+        required={false}
+        rules={[{ required: true }]}
+      >
+        <Select
+          placeholder="--Chọn--"
+          options={[
+            {
+              label: 'cong nghe thong tin',
+              value: 'cntt',
+            },
+          ]}
+        />
+      </Form.Item>
+
+      <Button onClick={onPrevious}>← Quay lại</Button>
 
       <Button
         type="primary"
@@ -66,4 +83,4 @@ const StudentStep1: React.FC<Props> = ({ form, onNext }) => {
   );
 };
 
-export default StudentStep1;
+export default StudentStep2;

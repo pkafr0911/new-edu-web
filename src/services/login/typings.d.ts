@@ -44,7 +44,7 @@ declare namespace API {
   };
 
   type LoginParams = {
-    username?: string;
+    email?: string;
     password?: string;
     autoLogin?: boolean;
     type?: string;
@@ -79,5 +79,35 @@ declare namespace API {
     datetime?: string;
     description?: string;
     type?: NoticeIconItemType;
+  };
+
+  type UserRequest = {
+    fullName: string; // user's full name (First + Last)
+    dob: string; // date of birth, ISO format (YYYY-MM-DD) recommended
+    location: string; // user's location
+
+    student?: {
+      intern?: {
+        university: string;
+        degree: string;
+        major: string;
+      };
+      experienced?: {
+        companyName: string;
+        position: string;
+        jobType: 'FULLTIME' | 'PARTTIME';
+        location: string;
+      };
+      interestedTopics: string[]; // list of interested topics
+    };
+
+    company?: {
+      companyName: string;
+      location: string;
+      typeOfBusiness: string;
+      purpose: string; // purpose of using Edu Platform
+      position: string; // user's position in company
+      hasExperiencedWorkWithStudentBefore: boolean;
+    };
   };
 }
