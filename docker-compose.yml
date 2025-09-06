@@ -1,14 +1,12 @@
 version: '3.9'
 services:
-  # docker build --no-cache -f Dockerfile -t new-edu:0.1.1 .
+  # docker build --no-cache -f Dockerfile -t new-edu-web .
   new-edu:
-    # image: new-edu:0.1.1
-    image: new-edu
+    image: new-edu-web
     # restart: always
     environment:
       - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
-      - API_ADDRESS=http://172.17.0.1:9080
-      # - API_ADDRESS=http://localhost:8000
+      - API_ADDRESS=http://172.17.0.1:8001
 
     ports:
       - 8000:8000
