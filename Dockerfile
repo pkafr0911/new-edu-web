@@ -36,7 +36,7 @@ RUN yarn build
 # CMD ["nginx", "-g", "daemon off;"]
 
 FROM nginx:alpine3.18 AS runner
-WORKDIR /usr/local/multicdn-check-in-web
+WORKDIR /usr/local/new-edu
 
 COPY --from=builder /app/dist ./
 

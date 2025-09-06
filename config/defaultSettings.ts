@@ -17,7 +17,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false, // Whether to fix the header (false for a non-fixed header)
   fixSiderbar: true, // Whether to fix the sidebar (true to keep it fixed)
   colorWeak: false, // Whether to enable color weakness mode
-  title: 'MultiCDN Check-in', // Application title
+  title: 'New Edu', // Application title
   pwa: true, // Enable Progressive Web App (PWA) support
   logo: '/favicon.svg', // Path to the logo/favicon image
   iconfontUrl: '', // Custom icon font URL (empty for default)

@@ -3,7 +3,7 @@
  * Solves the issue of a blank screen during the initial load.
  */
 (function () {
-  document.title = "MultiCDN Check-in - Loading..."; // Update the title here
+  document.title = "New Edu - Loading..."; // Update the title here
   const _root = document.querySelector('#root');
   if (_root && _root.innerHTML === '') {
     _root.innerHTML = `

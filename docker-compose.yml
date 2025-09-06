@@ -1,9 +1,9 @@
 version: '3.9'
 services:
-  # docker build --no-cache -f Dockerfile -t multicdn-check-in-web:0.1.1 .
-  multicdn-check-in-web:
-    # image: multicdn-check-in-web:0.1.1
-    image: multicdn-check-in-web
+  # docker build --no-cache -f Dockerfile -t new-edu:0.1.1 .
+  new-edu:
+    # image: new-edu:0.1.1
+    image: new-edu
     # restart: always
     environment:
       - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
@@ -14,6 +14,6 @@ services:
       - 8000:8000
     volumes:
       # - ./nginx/nginx_template.conf:/etc/nginx/templates/default.conf.template
-      - ./public/scripts/env.js:/usr/local/multicdn-check-in-web/scripts/env.js
-      - ./public/scripts/embed.js:/usr/local/multicdn-check-in-web/scripts/embed.js
+      - ./public/scripts/env.js:/usr/local/new-edu/scripts/env.js
+      - ./public/scripts/embed.js:/usr/local/new-edu/scripts/embed.js
       - ./nginx/logs:/var/log/nginx
