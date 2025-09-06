@@ -1,32 +1,10 @@
-import {
-  LoginForm,
-  ProFormCaptcha,
-  ProFormCheckbox,
-  ProFormText,
-} from '@ant-design/pro-components';
-import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
-import {
-  Alert,
-  Button,
-  Card,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Progress,
-  Space,
-  Steps,
-  Tabs,
-  Typography,
-} from 'antd';
+import { Helmet, history, useIntl, useModel } from '@umijs/max';
+import { message } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
-import { flushSync } from 'react-dom';
 import Settings from '../../../config/defaultSettings';
 import { login } from './service';
 import { Step1, Step2, Step3 } from './components';
-
-const { Title, Text, Link } = Typography;
 
 const useStyles = createStyles(({ token }) => ({
   container: {

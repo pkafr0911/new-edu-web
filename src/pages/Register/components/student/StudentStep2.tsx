@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, DatePicker, FormInstance, Select, Typography } from 'antd';
+import { Form, Button, FormInstance, Select, Typography } from 'antd';
 
 type Props = {
   form: FormInstance;

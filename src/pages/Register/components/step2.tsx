@@ -1,12 +1,6 @@
-import {
-  LoginForm,
-  ProFormCaptcha,
-  ProFormCheckbox,
-  ProFormText,
-} from '@ant-design/pro-components';
-import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, Button, Card, Input, message, Modal, Space, Tabs, Typography } from 'antd';
-import { createStyles } from 'antd-style';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
+import { FormattedMessage, history, useIntl } from '@umijs/max';
+import { Alert, Button, Card, Input, message, Modal, Space, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 type Props = {

@@ -1,6 +1,5 @@
-import { useIntl, useModel } from '@umijs/max';
-import { Alert, Button, Card, message, Space, Tabs, Typography } from 'antd';
-import { createStyles } from 'antd-style';
+import { useIntl } from '@umijs/max';
+import { Button, Card, Space, Typography } from 'antd';
 import React, { CSSProperties, useState } from 'react';
 type Props = {
   callback: (action: string, data: any) => void;

@@ -1,16 +1,15 @@
-import { useIntl, useModel } from '@umijs/max';
-import { Alert, Button, Card, Form, message, Progress, Space, Tabs, Typography } from 'antd';
+import { Form, Progress } from 'antd';
 import { createStyles } from 'antd-style';
-import React, { CSSProperties, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StudentStep1, StudentStep2, StudentStep3, StudentStep4 } from './student';
 import { CompanyStep1, CompanyStep2, CompanyStep3 } from './company';
+
 type Props = {
   userType: 'STUDENT' | 'COMPANY';
   callback: (action: string, data: any) => void;
 };
-const { Title, Text, Link } = Typography;
 
-const useStyles = createStyles(({ token }) => ({
+const useStyles = createStyles(() => ({
   leftImage: {
     display: 'flex',
     height: '100vh',
@@ -20,8 +19,6 @@ const useStyles = createStyles(({ token }) => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'left center',
     width: '50%',
-
-    // Hide image on small screens
     '@media (max-width: 768px)': {
       display: 'none',
       width: 0,
@@ -43,101 +40,81 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
   const [step, setStep] = useState<number>(1);
   const [data, setData] = useState<API.UserRequest>();
   const [progress, setProgress] = useState<number>(userType === 'STUDENT' ? 33 : 50);
+
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const [form3] = Form.useForm();
 
-  const onNext = (values) => {
-    const nextStep = () => {
-      setStep((pev) => pev + 1);
-    };
+  const handleNext = (values: any) => {
+    setData((prev) => (prev ? { ...prev, ...values } : undefined));
 
-    if (step === 1) {
-      setData((pev) =>
-        pev
-          ? {
-              ...pev,
-              ...values,
-            }
-          : undefined,
-      );
-      setProgress(userType === 'STUDENT' ? 66 : 99);
-    }
-
-    if (step === 2) {
-      setData((pev) =>
-        pev
-          ? {
-              ...pev,
-              ...values,
-            }
-          : undefined,
-      );
-      setProgress(99);
+    if (userType === 'STUDENT') {
+      if (step === 1) setProgress(66);
+      if (step === 2) setProgress(99);
+      if (step === 3) setProgress(100);
+    } else {
+      if (step === 1) setProgress(99);
+      if (step === 2) setProgress(100);
     }
 
     if (step === 3) {
-      setProgress(100);
-      // callback('submitStep3', data);
-      //TODO: call API here
+      // Last step → trigger API / callback
+      callback('submitStep3', data);
     }
 
-    nextStep();
+    setStep((prev) => prev + 1);
   };
 
-  const onPrevious = () => {
-    const previousStep = () => {
-      setStep((pev) => pev - 1);
-    };
-
-    previousStep();
+  const handlePrevious = () => {
+    setStep((prev) => prev - 1);
   };
+
+  const renderForm = () => {
+    if (userType === 'STUDENT') {
+      switch (step) {
+        case 1:
+          return <StudentStep1 form={form1} onNext={handleNext} />;
+        case 2:
+          return <StudentStep2 form={form2} onNext={handleNext} onPrevious={handlePrevious} />;
+        case 3:
+          return <StudentStep3 form={form3} onNext={handleNext} onPrevious={handlePrevious} />;
+        case 4:
+          return <StudentStep4 />;
+        default:
+          return null;
+      }
+    }
+
+    // COMPANY user flow
+    switch (step) {
+      case 1:
+        return <CompanyStep1 form={form1} onNext={handleNext} />;
+      case 2:
+        return <CompanyStep2 form={form2} onNext={handleNext} />;
+      case 3:
+        return <CompanyStep3 />;
+      default:
+        return null;
+    }
+  };
+
+  const showProgress = (userType === 'STUDENT' && step < 4) || (userType === 'COMPANY' && step < 3);
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {/* Left half (image) */}
+      {/* Left Side (Image) */}
       <div className={styles.leftImage}>
-        <div style={{ marginBottom: 32 }}>
-          <img alt="logo" src="/logo.svg" style={{ height: 40, margin: 24 }} />
-        </div>
+        <img alt="logo" src="/logo.svg" style={{ height: 40, margin: 24 }} />
       </div>
 
-      {/* Right half (form) */}
+      {/* Right Side (Form & Progress) */}
       <div className={styles.rightForm}>
-        {/* Process bar */}
-        {userType === 'STUDENT' ? (
-          step < 4
-        ) : step < 3 ? (
+        {showProgress && (
           <div style={{ marginBottom: 40 }}>
             <Progress percent={progress} showInfo={false} />
           </div>
-        ) : null}
-
-        {/* Form */}
-        <div style={{ flex: 1 }}>
-          {step === 1 ? (
-            userType === 'STUDENT' ? (
-              <StudentStep1 form={form1} onNext={onNext} />
-            ) : (
-              <CompanyStep1 form={form1} onNext={onNext} />
-            )
-          ) : null}
-          {step === 2 ? (
-            userType === 'STUDENT' ? (
-              <StudentStep2 form={form2} onNext={onNext} onPrevious={onPrevious} />
-            ) : (
-              <CompanyStep2 form={form2} onNext={onNext} />
-            )
-          ) : null}
-          {step === 3 ? (
-            userType === 'STUDENT' ? (
-              <StudentStep3 form={form3} onNext={onNext} onPrevious={onPrevious} />
-            ) : (
-              <CompanyStep3 />
-            )
-          ) : null}
-          {step === 4 ? userType === 'STUDENT' ? <StudentStep4 /> : null : null}
-        </div>
+        )}
+        <div style={{ flex: 1 }}>{renderForm()}</div>
       </div>
     </div>
   );
