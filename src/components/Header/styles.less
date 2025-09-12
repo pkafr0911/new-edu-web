@@ -1,0 +1,75 @@
+/* Header container */
+.custom-header {
+  background-color: #000e8d;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+/* Left section (logo + menu) */
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  cursor: pointer;
+  margin-right: 32px;
+
+  img {
+    width: 160px;
+    height: 40px;
+    object-fit: contain;
+  }
+}
+
+/* Menu */
+.header-menu {
+  background-color: transparent !important;
+  border-bottom: none !important;
+
+  .ant-menu-item {
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0 14px;
+  }
+
+  .ant-menu-item-selected {
+    border-bottom: 2px solid #fff !important;
+    color: #fff !important;
+  }
+}
+
+/* Right section buttons */
+.employer-btn {
+  background: #dbeafe !important;
+  color: #173da6 !important;
+  border: 1px solid #173da6 !important;
+  font-weight: 500;
+}
+
+.bell-btn {
+  background: #304fa5ff !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.register-btn {
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.login-btn {
+  color: #173da6 !important;
+  border: none !important;
+  font-weight: 500;
+}
+
+/* Username next to avatar */
+.username {
+  color: #fff;
+  font-weight: 500;
+}

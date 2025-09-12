@@ -12,6 +12,8 @@ import { isPlainObject } from 'lodash';
 import UnauthorizedPage from '@/pages/403';
 import { isInIgnoreAuthPage, loginOut } from './helpers';
 import './libs/iconfont';
+import { Layout } from 'antd';
+import CustomHeader from './components/Header';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -109,6 +111,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         ]
       : [],
     menuHeaderRender: undefined,
+    headerRender: () => <CustomHeader currentUser={initialState?.currentUser} />,
+    menuRender: false, // disable default menu
     // Custom 403 page if necessary
     unAccessible: <UnauthorizedPage />,
     childrenRender: (children) => {
@@ -116,7 +120,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       return (
         <>
           {children}
-          {isDev && (
+          {/* {isDev && (
             <SettingDrawer
               disableUrlParams
               enableDarkTheme
@@ -128,7 +132,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
                 }));
               }}
             />
-          )}
+          )} */}
         </>
       );
     },

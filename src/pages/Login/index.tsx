@@ -89,36 +89,38 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
-    try {
-      // Login request
-      const msg = await login({ ...values });
-      if (msg.data) {
-        const successMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: 'Login Successful!',
-        });
+    // try {
+    //   // Login request
+    //   const msg = await login({ ...values });
+    //   if (msg.data) {
+    //     const successMessage = intl.formatMessage({
+    //       id: 'pages.login.success',
+    //       defaultMessage: 'Login Successful!',
+    //     });
 
-        //set up token
-        const token = msg.data.token;
-        localStorage.setItem('token', token);
+    //     //set up token
+    //     const token = msg.data.token;
+    //     localStorage.setItem('token', token);
 
-        //show mess
-        message.success(successMessage);
-        await fetchUserInfo();
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
-        return;
-      }
-      // Set user error message on failure
-      setUserLoginState(msg);
-    } catch (error) {
-      const failureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: 'Login Failed, Please try again!',
-      });
-      console.log(error);
-      message.error(failureMessage);
-    }
+    //     //show mess
+    //     message.success(successMessage);
+    //     await fetchUserInfo();
+    //     const urlParams = new URL(window.location.href).searchParams;
+    //     history.push(urlParams.get('redirect') || '/');
+    //     return;
+    //   }
+    //   // Set user error message on failure
+    //   setUserLoginState(msg);
+    // } catch (error) {
+    //   const failureMessage = intl.formatMessage({
+    //     id: 'pages.login.failure',
+    //     defaultMessage: 'Login Failed, Please try again!',
+    //   });
+    //   console.log(error);
+    //   message.error(failureMessage);
+    // }
+
+    history.push('/');
   };
 
   return (

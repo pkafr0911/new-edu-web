@@ -15,26 +15,24 @@ import { IGNORE_AUTHORIZATION_PAGE } from './consants';
 //#region logout
 // Logout function to handle user log out and redirect
 export const loginOut = async (callLogout?: boolean) => {
-  if (callLogout) {
-    await logout();
-  }
-  //remove token
-  localStorage.removeItem('token');
-
-  //set up redirect
-  const { search, pathname } = window.location;
-  const urlParams = new URL(window.location.href).searchParams;
-  const redirect = urlParams.get('redirect');
-
-  if (window.location.pathname !== '/user/login' && !redirect) {
-    history.replace({
-      pathname: '/user/login',
-      search: stringify({
-        redirect: pathname + search,
-      }),
-    });
-    window.location.reload();
-  }
+  // if (callLogout) {
+  //   await logout();
+  // }
+  // //remove token
+  // localStorage.removeItem('token');
+  // //set up redirect
+  // const { search, pathname } = window.location;
+  // const urlParams = new URL(window.location.href).searchParams;
+  // const redirect = urlParams.get('redirect');
+  // if (window.location.pathname !== '/user/login' && !redirect) {
+  //   history.replace({
+  //     pathname: '/user/login',
+  //     search: stringify({
+  //       redirect: pathname + search,
+  //     }),
+  //   });
+  //   window.location.reload();
+  // }
 };
 
 //#endregion

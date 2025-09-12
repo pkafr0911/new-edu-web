@@ -29,13 +29,19 @@ export default [
     ],
   },
 
-  // Welcome page
+  // home page
   {
-    path: '/welcome',
-    name: 'welcome', // Title for the welcome page
-    icon: 'smile', // Icon for the welcome page
-    component: './Welcome', // Component for the welcome page
+    path: '/home',
+    name: 'home', // Title for the home page
+    icon: 'smile', // Icon for the home page
+    component: './Home', // Component for the home page
     // hideInMenu: true,
+  },
+
+  {
+    path: '/company-profile',
+    name: 'companyProfile', // Title for the company-profile page
+    component: './companyProfile', // Component for the company-profile page
   },
 
   // Events page
@@ -97,10 +103,10 @@ export default [
     ],
   },
 
-  // Default redirect to the welcome page
+  // Default redirect to the home page
   {
     path: '/',
-    redirect: '/welcome', // Redirect root path to welcome page
+    redirect: '/home', // Redirect root path to home page
   },
 
   // Catch-all route for undefined paths, displaying a 404 page
