@@ -90,7 +90,7 @@ export default defineConfig({
    * @name Layout Plugin
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: 'MulticCDN - Check-in',
+  title: 'New Edu',
   layout: {
     locale: true,
     ...defaultSettings,
