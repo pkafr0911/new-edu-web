@@ -44,6 +44,12 @@ export default [
     component: './companyProfile', // Component for the company-profile page
   },
 
+  {
+    path: '/student-profile',
+    name: 'studentProfile', // Title for the student-profile page
+    component: './studentProfile', // Component for the student-profile page
+  },
+
   // Events page
   {
     path: '/events',
