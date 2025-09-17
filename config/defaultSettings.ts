@@ -32,8 +32,8 @@ const Settings: ProLayoutProps & {
     dev: 'http://localhost:9080',
   },
   // Deployment base path
-  basePath: '/',
-  publicPath: '/',
+  basePath: '/new-edu-web/',
+  publicPath: '/new-edu-web/',
 };
 
 export default Settings;
