@@ -9,6 +9,8 @@ const Settings: ProLayoutProps & {
   serveUrlMap: {
     dev: string;
   };
+  basePath: string;
+  publicPath: string;
 } = {
   navTheme: 'light', // Theme color of the navigation bar (light mode)
   colorPrimary: '#2563EB', // Primary color for the theme (Dawn Blue)
@@ -29,6 +31,9 @@ const Settings: ProLayoutProps & {
   serveUrlMap: {
     dev: 'http://localhost:9080',
   },
+  // Deployment base path
+  basePath: '/new-edu-web/',
+  publicPath: '/new-edu-web/',
 };
 
 export default Settings;
