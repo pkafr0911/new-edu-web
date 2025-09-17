@@ -1,6 +1,6 @@
 import { Form, Progress } from 'antd';
 import { createStyles } from 'antd-style';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StudentStep1, StudentStep2, StudentStep3, StudentStep4 } from './student';
 import { CompanyStep1, CompanyStep2, CompanyStep3 } from './company';
 import Settings from '@/../config/defaultSettings';
@@ -46,6 +46,10 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
   const [form2] = Form.useForm();
   const [form3] = Form.useForm();
 
+  useEffect(() => {
+    console.log('step', step);
+  }, [step]);
+
   const handleNext = (values: any) => {
     setData((prev) => (prev ? { ...prev, ...values } : undefined));
 
@@ -57,13 +61,17 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
       if (step === 1) setProgress(99);
       if (step === 2) setProgress(100);
     }
-
-    if (step === 3) {
-      // Last step → trigger API / callback
-      callback('submitStep3', data);
-    }
-
     setStep((prev) => prev + 1);
+
+    // if (step === 3 && userType === 'STUDENT') {
+    //   // Last step → trigger API / callback
+    //   callback('submitStep3', data);
+    // }
+
+    // if (step === 4 && userType === 'COMPANY') {
+    //   // Last step → trigger API / callback
+    //   callback('submitStep3', data);
+    // }
   };
 
   const handlePrevious = () => {
