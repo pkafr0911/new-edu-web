@@ -2,9 +2,9 @@ import { Helmet, history, useIntl, useModel } from '@umijs/max';
 import { message } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
-import Settings from '../../../config/defaultSettings';
 import { login } from './service';
 import { Step1, Step2, Step3 } from './components';
+import Settings from '@/../config/defaultSettings';
 
 const useStyles = createStyles(({ token }) => ({
   container: {
@@ -112,7 +112,11 @@ const Login: React.FC = () => {
         <div className={styles.container}>
           {/* <Lang /> */}
           <div>
-            <img style={{ margin: 24 }} alt="logo" src="/logo.svg" />
+            <img
+              style={{ margin: 24 }}
+              alt="logo"
+              src={`${Settings.basePath.slice(0, -1)}/logo.svg`}
+            />
           </div>
 
           <div

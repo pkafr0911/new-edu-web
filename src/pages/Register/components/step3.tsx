@@ -3,6 +3,7 @@ import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { StudentStep1, StudentStep2, StudentStep3, StudentStep4 } from './student';
 import { CompanyStep1, CompanyStep2, CompanyStep3 } from './company';
+import Settings from '@/../config/defaultSettings';
 
 type Props = {
   userType: 'STUDENT' | 'COMPANY';
@@ -104,7 +105,11 @@ const Step3: React.FC<Props> = ({ userType, callback }) => {
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
       {/* Left Side (Image) */}
       <div className={styles.leftImage}>
-        <img alt="logo" src="/logo.svg" style={{ height: 40, margin: 24 }} />
+        <img
+          alt="logo"
+          src={`${Settings.basePath.slice(0, -1)}/logo.svg`}
+          style={{ height: 40, margin: 24 }}
+        />
       </div>
 
       {/* Right Side (Form & Progress) */}

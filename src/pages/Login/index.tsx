@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../config/defaultSettings';
 import { login } from './service';
+import Settings from '@/../config/defaultSettings';
 
 const { Title, Text, Link } = Typography;
 
@@ -136,7 +137,7 @@ const Login: React.FC = () => {
       </Helmet>
       {/* <Lang /> */}
       <div>
-        <img style={{ margin: 24 }} alt="logo" src="/logo.svg" />
+        <img style={{ margin: 24 }} alt="logo" src={`${Settings.basePath.slice(0, -1)}/logo.svg`} />
       </div>
       <div
         style={{

@@ -3,6 +3,7 @@ import { Layout, Menu, Button, Avatar, Dropdown, Space } from 'antd';
 import { BellOutlined, UserOutlined, SolutionOutlined } from '@ant-design/icons';
 import { history } from '@umijs/max';
 import './styles.less';
+import Settings from '@/../config/defaultSettings';
 
 const { Header } = Layout;
 
@@ -24,7 +25,7 @@ const CustomHeader: React.FC<{ currentUser?: API.CurrentUser }> = ({ currentUser
       <div className="header-left">
         {/* Logo */}
         <div className="header-logo" onClick={() => history.push('/')}>
-          <img src="/logo.svg" alt="New Edu" />
+          <img src={`${Settings.basePath.slice(0, -1)}/logo.svg`} alt="New Edu" />
         </div>
 
         {/* Nav items */}
