@@ -25,10 +25,9 @@ const LoginMessage: React.FC<{ content: string }> = ({ content }) => {
 
 const Step2: React.FC<Props> = ({ userType, callback }) => {
   const [userLoginState, setUserLoginState] = useState<Res<API.LoginResult>>({
-    code: 0,
+    errorCode: 0,
     message: '',
     data: { token: '' },
-    request_id: '',
   });
   const intl = useIntl();
 
@@ -218,7 +217,7 @@ const Step2: React.FC<Props> = ({ userType, callback }) => {
               ]}
             />
           </>
-          {userLoginState.code !== 0 && (
+          {userLoginState.errorCode !== 0 && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',

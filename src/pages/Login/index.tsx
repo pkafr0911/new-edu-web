@@ -67,10 +67,9 @@ const LoginMessage: React.FC<{ content: string }> = ({ content }) => {
 
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<Res<API.LoginResult>>({
-    code: 0,
+    errorCode: 0,
     message: '',
     data: { token: '' },
-    request_id: '',
   });
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
@@ -241,7 +240,7 @@ const Login: React.FC = () => {
               </a>
             </div>
 
-            {userLoginState.code !== 0 && (
+            {userLoginState.errorCode !== 0 && (
               <LoginMessage
                 content={intl.formatMessage({
                   id: 'pages.login.accountLogin.errorMessage',
