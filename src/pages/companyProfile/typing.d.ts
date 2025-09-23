@@ -1,4 +1,14 @@
 declare namespace CompanyModule {
+  type Job = {
+    id: number;
+    jobTitle: string;
+    companyName: string;
+    salary: string;
+    jobType: string;
+    timeLeft: string;
+    location: string;
+  };
+
   type Introduction = {
     id: string;
     workingHours: string;

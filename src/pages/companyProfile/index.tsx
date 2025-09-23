@@ -12,6 +12,7 @@ import {
   Segmented,
   Row,
   Col,
+  Spin,
 } from 'antd';
 import {
   UserOutlined,
@@ -21,72 +22,116 @@ import {
   GlobalOutlined,
   BankOutlined,
   ClockCircleOutlined,
+  EnvironmentOutlined,
+  FacebookOutlined,
 } from '@ant-design/icons';
 import './styles.less';
 
+import dayjs from 'dayjs';
+import { fetchCompanyBanner, fetchCompanyDescription, fetchCompanyIntroduction } from './service';
+
 const { Content } = Layout;
-const { Text, Title } = Typography;
+const { Text, Title, Link } = Typography;
 
-const companyProfile: React.FC = () => {
-  const [introHtml, setIntroHtml] = useState<string>('');
+const CompanyProfile: React.FC<> = () => {
+  const [decsHtml, setDecsHtml] = useState<string>('');
+  const [banner, setBanner] = useState<CompanyModule.Banner>();
+  const [intro, setIntro] = useState<CompanyModule.Introduction>();
   const [activeTab, setActiveTab] = useState<string>('Giới thiệu');
+  const [loading, setLoading] = useState<boolean>(true);
 
-  useState;
-
-  // Simulate fetching company intro HTML
+  //fake uuid
+  const id = 'de0a1d3b-5501-4fa3-a0c2-0be4b0c45db0';
   useEffect(() => {
-    const fakeHtml = `
-      <h3>Giới thiệu</h3>
-      <p>
-        Trung tâm Công nghệ Thông tin MobiFone là đơn vị trực thuộc Tổng Công ty Viễn thông
-        MobiFone, với sứ mệnh phát triển các giải pháp công nghệ và chuyển đổi số tiên tiến.
-      </p>
-      <ul>
-        <li>💡 Cung cấp giải pháp phần mềm cho doanh nghiệp.</li>
-        <li>🌍 Hợp tác với nhiều đối tác quốc tế.</li>
-        <li>📈 Định hướng phát triển bền vững và sáng tạo.</li>
-      </ul>
-      <p>
-        Với hơn <strong>1500 nhân viên</strong>, MobiFone IT đã và đang đồng hành cùng hàng ngàn khách hàng
-        trong và ngoài nước.
-      </p>
-    `;
-    setIntroHtml(fakeHtml);
-  }, []);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch introduction (general company info)
+        const intro = await fetchCompanyIntroduction(id);
+        setIntro(intro);
+
+        // Fetch description
+        const decs = await fetchCompanyDescription(id);
+        setDecsHtml(decs?.longDescription || decs?.shortDescription || '');
+
+        // Fetch banner
+        const banner = await fetchCompanyBanner(id);
+        setBanner(banner);
+      } catch (error) {
+        console.error('Error fetching company data', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const reviews = [
     {
       author: 'Hanh Pham',
       role: 'Development',
-      date: '3/6/2025',
+      date: dayjs('2025-03-06').format('DD/MM/YYYY'),
       rating: 4,
       comment: 'Công ty phúc lợi khá ổn, đồng nghiệp vui vẻ, hòa đồng.',
     },
     {
       author: 'Hoang Huy',
       role: 'Graphic Designer',
-      date: '1/4/2025',
+      date: dayjs('2025-01-04').format('DD/MM/YYYY'),
       rating: 3,
       comment: 'Benefit tốt, nhưng còn thiếu sự phát triển bản thân.',
     },
   ];
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '40px 0' }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <Content>
       {/* Banner */}
       <div
         style={{
-          backgroundImage: "url('/images/company-profile-backgound.png')",
+          backgroundImage: `url('/images/company-profile-backgound.png')`,
         }}
         className="company-banner"
       >
         {/* Left side: logo + text inline */}
         <div className="company-info">
-          <img src="/company-logo.png" alt="Company" className="company-logo" />
-          <div className="company-text">
-            <Title level={3}>Trung tâm công nghệ thông tin MobiFone</Title>
-            <p className="opacity-90 mt-2">Hà Nội - Đà Nẵng - TP Hồ Chí Minh | mobifone.vn</p>
-          </div>
+          <Space align="center" size="large">
+            <Avatar
+              shape={'square'}
+              size={160}
+              src={banner?.avatar || '/company-logo.png'}
+              alt={banner?.name}
+            />
+            <div>
+              <Title level={3} style={{ marginBottom: 4 }}>
+                {banner?.name}
+              </Title>
+              <Text style={{ color: '#F7941D' }}>
+                <TeamOutlined /> {banner?.openingJobs} việc làm đang tuyển dụng
+              </Text>
+              <br />
+              <Text type="secondary">
+                <EnvironmentOutlined /> {banner?.location}
+              </Text>
+              <br />
+              <Link href={banner?.website} target="_blank">
+                <GlobalOutlined /> {banner?.website}
+              </Link>
+              <br />
+              <Link href={banner?.socialMedialUrl} target="_blank">
+                <FacebookOutlined /> {banner?.socialMedialUrl}
+              </Link>
+            </div>
+          </Space>
         </div>
 
         {/* Right side: buttons on top, avatars below */}
@@ -167,12 +212,7 @@ const companyProfile: React.FC = () => {
 
             {/* Company Intro */}
             <Card title="Giới thiệu công ty" className="col-span-2">
-              <div dangerouslySetInnerHTML={{ __html: introHtml }} />
-              <div className="grid grid-cols-3 gap-2 mt-4">
-                <img src="/img1.jpg" className="rounded-lg" />
-                <img src="/img2.jpg" className="rounded-lg" />
-                <img src="/img3.jpg" className="rounded-lg" />
-              </div>
+              <div dangerouslySetInnerHTML={{ __html: decsHtml }} />
             </Card>
           </Space>
         )}
@@ -228,4 +268,4 @@ const companyProfile: React.FC = () => {
   );
 };
 
-export default companyProfile;
+export default CompanyProfile;
