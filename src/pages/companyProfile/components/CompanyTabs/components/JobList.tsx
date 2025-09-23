@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, List, Avatar, Button, Space, Typography, Tag, Spin } from 'antd';
+import { Card, List, Avatar, Button, Space, Typography, Tag, Spin, Flex } from 'antd';
 import {
   EnvironmentOutlined,
   FieldTimeOutlined,
@@ -63,10 +63,10 @@ const JobList: React.FC<JobListProps> = ({ companyId }) => {
                     />
                   }
                   title={
-                    <Space direction="vertical">
+                    <Flex vertical>
                       <Text strong>{job.jobTitle}</Text>
                       <Text type="secondary">{job.location}</Text>
-                    </Space>
+                    </Flex>
                   }
                   description={
                     <Space size="middle">
