@@ -19,10 +19,9 @@ const useStyles = createStyles(({ token }) => ({
 
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<Res<API.LoginResult>>({
-    code: 0,
+    errorCode: 0,
     message: '',
     data: { token: '' },
-    request_id: '',
   });
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();

@@ -17,7 +17,7 @@ const { SERVE_ENV = 'dev' } = process.env;
 
 export default {
   dev: {
-    '/api': {
+    '/newedu/api/v1': {
       target: defaultSettings.serveUrlMap[SERVE_ENV],
       changeOrigin: true,
     },

@@ -2,7 +2,7 @@
  * All constants that will be used throughout the project will be here.
  */
 
-export const GLOBAL_PREFIX = '/api';
+export const GLOBAL_PREFIX = '/newedu/api/v1';
 
 export const codeMessage = {
   200: 'The server successfully returns the requested data.  ',

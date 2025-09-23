@@ -31,6 +31,8 @@ const companyProfile: React.FC = () => {
   const [introHtml, setIntroHtml] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>('Giới thiệu');
 
+  useState;
+
   // Simulate fetching company intro HTML
   useEffect(() => {
     const fakeHtml = `
@@ -72,25 +74,39 @@ const companyProfile: React.FC = () => {
   return (
     <Content>
       {/* Banner */}
-      <div className="company-banner">
-        <div>
+      <div
+        style={{
+          backgroundImage: "url('/images/company-profile-backgound.png')",
+        }}
+        className="company-banner"
+      >
+        {/* Left side: logo + text inline */}
+        <div className="company-info">
           <img src="/company-logo.png" alt="Company" className="company-logo" />
-          <Title level={3}>Trung tâm công nghệ thông tin MobiFone</Title>
-          <p className="opacity-90 mt-2">Hà Nội - Đà Nẵng - TP Hồ Chí Minh | mobifone.vn</p>
+          <div className="company-text">
+            <Title level={3}>Trung tâm công nghệ thông tin MobiFone</Title>
+            <p className="opacity-90 mt-2">Hà Nội - Đà Nẵng - TP Hồ Chí Minh | mobifone.vn</p>
+          </div>
         </div>
 
-        <Space align="center">
-          <Button icon={<ShareAltOutlined />}>Chia sẻ</Button>
-          <Button type="primary" icon={<PlusOutlined />}>
-            Theo dõi
-          </Button>
+        {/* Right side: buttons on top, avatars below */}
+        <div className="company-actions">
+          <Space>
+            <Button ghost icon={<ShareAltOutlined />}>
+              Chia sẻ
+            </Button>
+            <Button ghost icon={<PlusOutlined />}>
+              Theo dõi
+            </Button>
+          </Space>
+
           <Avatar.Group maxCount={3} size="large">
             <Avatar src="https://i.pravatar.cc/100?img=1" />
             <Avatar src="https://i.pravatar.cc/100?img=2" />
             <Avatar src="https://i.pravatar.cc/100?img=3" />
             <Avatar>+567</Avatar>
           </Avatar.Group>
-        </Space>
+        </div>
       </div>
 
       {/* Segmented Switch */}
