@@ -48,7 +48,7 @@ const Introduction: React.FC<{ descHtml?: CompanyModule.Description }> = ({ desc
                 src={img.src}
                 alt={img.alt}
                 style={{ borderRadius: 8, objectFit: 'cover' }}
-                preview={false}
+                preview={true}
               />
             </Col>
           ))}
@@ -89,7 +89,7 @@ const Introduction: React.FC<{ descHtml?: CompanyModule.Description }> = ({ desc
                 objectFit: 'contain',
                 borderRadius: 8,
               }}
-              preview={false}
+              preview={true}
             />
 
             {/* Thumbnail row */}
