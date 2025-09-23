@@ -33,8 +33,8 @@ import { fetchCompanyBanner, fetchCompanyDescription, fetchCompanyIntroduction }
 const { Content } = Layout;
 const { Text, Title, Link } = Typography;
 
-const CompanyProfile: React.FC<> = () => {
-  const [decsHtml, setDecsHtml] = useState<string>('');
+const CompanyProfile: React.FC = () => {
+  const [descHtml, setDescHtml] = useState<CompanyModule.Description>();
   const [banner, setBanner] = useState<CompanyModule.Banner>();
   const [intro, setIntro] = useState<CompanyModule.Introduction>();
   const [activeTab, setActiveTab] = useState<string>('Giới thiệu');
@@ -52,8 +52,8 @@ const CompanyProfile: React.FC<> = () => {
         setIntro(intro);
 
         // Fetch description
-        const decs = await fetchCompanyDescription(id);
-        setDecsHtml(decs?.longDescription || decs?.shortDescription || '');
+        const desc = await fetchCompanyDescription(id);
+        setDescHtml(desc);
 
         // Fetch banner
         const banner = await fetchCompanyBanner(id);
@@ -102,39 +102,36 @@ const CompanyProfile: React.FC<> = () => {
         }}
         className="company-banner"
       >
-        {/* Left side: logo + text inline */}
+        {/* Left side: logo + text */}
         <div className="company-info">
-          <Space align="center" size="large">
-            <Avatar
-              shape={'square'}
-              size={160}
-              src={banner?.avatar || '/company-logo.png'}
-              alt={banner?.name}
-            />
-            <div>
-              <Title level={3} style={{ marginBottom: 4 }}>
-                {banner?.name}
-              </Title>
-              <Text style={{ color: '#F7941D' }}>
-                <TeamOutlined /> {banner?.openingJobs} việc làm đang tuyển dụng
-              </Text>
-              <br />
-              <Text type="secondary">
-                <EnvironmentOutlined /> {banner?.location}
-              </Text>
-              <br />
-              <Link href={banner?.website} target="_blank">
-                <GlobalOutlined /> {banner?.website}
-              </Link>
-              <br />
-              <Link href={banner?.socialMedialUrl} target="_blank">
-                <FacebookOutlined /> {banner?.socialMedialUrl}
-              </Link>
-            </div>
-          </Space>
+          <Avatar
+            className="company-logo"
+            shape="square"
+            src={banner?.avatar || '/company-logo.png'}
+            alt={banner?.name}
+          />
+          <div className="company-text">
+            <Title level={3}>{banner?.name}</Title>
+
+            <Text style={{ color: '#F7941D' }}>
+              <TeamOutlined /> {banner?.openingJobs} việc làm đang tuyển dụng
+            </Text>
+
+            <Text style={{ color: '#FFF' }}>
+              <EnvironmentOutlined /> {banner?.location}
+            </Text>
+
+            <Link style={{ color: '#FFF' }} href={banner?.website} target="_blank">
+              <GlobalOutlined /> {banner?.website}
+            </Link>
+
+            <Link style={{ color: '#FFF' }} href={banner?.socialMedialUrl} target="_blank">
+              <FacebookOutlined /> {banner?.socialMedialUrl}
+            </Link>
+          </div>
         </div>
 
-        {/* Right side: buttons on top, avatars below */}
+        {/* Right side: buttons + avatars */}
         <div className="company-actions">
           <Space>
             <Button ghost icon={<ShareAltOutlined />}>
@@ -173,7 +170,7 @@ const CompanyProfile: React.FC<> = () => {
                     <ClockCircleOutlined className="info-icon" />
                     <div>
                       <div className="info-label">Thời gian làm việc</div>
-                      <div className="info-value">Thứ 2 - Thứ 6</div>
+                      <div className="info-value">{intro?.workingHours}</div>
                     </div>
                   </div>
                 </Col>
@@ -183,7 +180,7 @@ const CompanyProfile: React.FC<> = () => {
                     <TeamOutlined className="info-icon" />
                     <div>
                       <div className="info-label">Quy mô công ty</div>
-                      <div className="info-value">1000-2000 nhân viên</div>
+                      <div className="info-value">{intro?.companyScale}</div>
                     </div>
                   </div>
                 </Col>
@@ -193,7 +190,7 @@ const CompanyProfile: React.FC<> = () => {
                     <GlobalOutlined className="info-icon" />
                     <div>
                       <div className="info-label">Quốc gia</div>
-                      <div className="info-value">Vietnam, Úc</div>
+                      <div className="info-value">{intro?.location}</div>
                     </div>
                   </div>
                 </Col>
@@ -203,7 +200,7 @@ const CompanyProfile: React.FC<> = () => {
                     <BankOutlined className="info-icon" />
                     <div>
                       <div className="info-label">Lĩnh vực</div>
-                      <div className="info-value">Ngân hàng</div>
+                      <div className="info-value">{intro?.industry}</div>
                     </div>
                   </div>
                 </Col>
@@ -212,7 +209,12 @@ const CompanyProfile: React.FC<> = () => {
 
             {/* Company Intro */}
             <Card title="Giới thiệu công ty" className="col-span-2">
-              <div dangerouslySetInnerHTML={{ __html: decsHtml }} />
+              <div dangerouslySetInnerHTML={{ __html: descHtml?.shortDescription || '<></>' }} />
+            </Card>
+
+            {/* Company Desc */}
+            <Card className="col-span-2">
+              <div dangerouslySetInnerHTML={{ __html: descHtml?.longDescription || '<></>' }} />
             </Card>
           </Space>
         )}
