@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Card, List, Avatar, Button, Space, Typography, Tag, Spin } from 'antd';
-import { EnvironmentOutlined, FieldTimeOutlined, DollarOutlined } from '@ant-design/icons';
-import { fetchListCompanyJobs } from '../../../service';
+import {
+  EnvironmentOutlined,
+  FieldTimeOutlined,
+  DollarOutlined,
+  CalendarOutlined,
+} from '@ant-design/icons';
+import { fetchListCompanyJobs } from '@/pages/companyProfile/service';
+import IconBookMark from '@/components/Icon/IconBookMark';
 
 const { Text } = Typography;
 
@@ -17,7 +23,7 @@ const JobList: React.FC<JobListProps> = ({ companyId }) => {
     const loadJobs = async () => {
       try {
         setLoading(true);
-        const res = await fetchListCompanyJobs({ companyId, current: 1, pageSize: 5 });
+        const res = await fetchListCompanyJobs(companyId, { current: 0, pageSize: 5 });
         setJobs(res.data);
       } catch (err) {
         console.error('Error fetching jobs', err);
@@ -42,21 +48,38 @@ const JobList: React.FC<JobListProps> = ({ companyId }) => {
                   <Button type="primary" key="apply">
                     Ứng tuyển
                   </Button>,
+                  <Button color="default" variant="filled" style={{ borderRadius: 18, width: 36 }}>
+                    <IconBookMark style={{ width: 20, height: 15, margin: -10 }} />
+                  </Button>,
                 ]}
               >
                 <List.Item.Meta
                   //   avatar={<Avatar src={job.companyLogo || '/company-logo.png'} />}
-                  avatar={<Avatar src={'/company-logo.png'} />}
-                  title={<Text strong>{job.companyName}</Text>}
+                  avatar={
+                    <Avatar
+                      shape="square"
+                      style={{ height: 64, width: 64 }}
+                      src={'/company-logo.png'}
+                    />
+                  }
+                  title={
+                    <Space direction="vertical">
+                      <Text strong>{job.jobTitle}</Text>
+                      <Text type="secondary">{job.location}</Text>
+                    </Space>
+                  }
                   description={
                     <Space size="middle">
-                      <Tag color="blue">
+                      <Tag color="blue" bordered={false}>
                         <DollarOutlined /> {job.salary || 'Thoả thuận'}
                       </Tag>
-                      <Tag>
+                      <Tag bordered={false}>
                         <FieldTimeOutlined /> {job.jobType || 'Full time'}
                       </Tag>
-                      <Tag>
+                      <Tag bordered={false}>
+                        <CalendarOutlined /> {job.timeLeft || 'Hà Nội'}
+                      </Tag>
+                      <Tag bordered={false}>
                         <EnvironmentOutlined /> {job.location || 'Hà Nội'}
                       </Tag>
                     </Space>

@@ -51,10 +51,18 @@ const Banner: React.FC<{ banner?: CompanyModule.Banner }> = ({ banner }) => {
       {/* Right */}
       <div className="company-actions">
         <Space>
-          <Button ghost icon={<ShareAltOutlined />}>
+          <Button
+            type="text"
+            style={{ color: '#fff', border: '1px solid' }}
+            icon={<ShareAltOutlined />}
+          >
             Chia sẻ
           </Button>
-          <Button ghost icon={<PlusOutlined />}>
+          <Button
+            type="text"
+            style={{ color: '#fff', border: '1px solid' }}
+            icon={<PlusOutlined />}
+          >
             Theo dõi
           </Button>
         </Space>

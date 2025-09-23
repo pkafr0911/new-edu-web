@@ -4,8 +4,8 @@ import { request } from '@umijs/max';
 const target = '/companies';
 const prefix = GLOBAL_PREFIX + target;
 
-export const fetchListCompanyJobs = ({ current = 1, pageSize = 10, ...res }) => {
-  return request<Res<ResListData<CompanyModule.Job>>>(prefix, {
+export const fetchListCompanyJobs = (id: string, { current = 1, pageSize = 10, ...res }) => {
+  return request<Res<ResListData<CompanyModule.Job>>>(prefix + `/${id}/jobs`, {
     method: 'GET',
     params: {
       offset: current,
