@@ -12,10 +12,10 @@ import IconBookMark from '@/components/Icon/IconBookMark';
 const { Text } = Typography;
 
 interface JobListProps {
-  companyId: string;
+  id: string;
 }
 
-const JobList: React.FC<JobListProps> = ({ companyId }) => {
+const JobList: React.FC<JobListProps> = ({ id }) => {
   const [jobs, setJobs] = useState<CompanyModule.Job[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -23,7 +23,7 @@ const JobList: React.FC<JobListProps> = ({ companyId }) => {
     const loadJobs = async () => {
       try {
         setLoading(true);
-        const res = await fetchListCompanyJobs(companyId, { current: 0, pageSize: 5 });
+        const res = await fetchListCompanyJobs(id, { current: 0, pageSize: 5 });
         setJobs(res.data);
       } catch (err) {
         console.error('Error fetching jobs', err);
@@ -32,7 +32,7 @@ const JobList: React.FC<JobListProps> = ({ companyId }) => {
       }
     };
     loadJobs();
-  }, [companyId]);
+  }, [id]);
 
   return (
     <div style={{ marginTop: 32 }}>

@@ -13,7 +13,8 @@ const CustomHeader: React.FC<{ currentUser?: API.CurrentUser }> = ({ currentUser
   const userMenu = (
     <Menu
       items={[
-        { key: 'profile', label: 'Hồ sơ' },
+        { key: 'profile', label: 'Tài khoản' },
+        { key: 'setting', label: 'Cài đặt' },
         { key: 'logout', label: 'Đăng xuất' },
       ]}
     />
