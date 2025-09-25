@@ -25,6 +25,7 @@ import {
   ProfileOutlined,
   TeamOutlined,
   SettingOutlined,
+  BellOutlined,
 } from '@ant-design/icons';
 import './styles.less';
 
@@ -110,7 +111,7 @@ const StudentProfile: React.FC = () => {
     { key: 'my-jobs', label: 'Việc làm của tôi', icon: <ProfileOutlined /> },
     { key: 'companies', label: 'Nhà tuyển dụng/Công ty', icon: <TeamOutlined /> },
     { key: 'invitations', label: 'Lời mời công việc', icon: <MailOutlined /> },
-    { key: 'notifications', label: 'Thông báo', icon: <MailOutlined /> },
+    { key: 'notifications', label: 'Thông báo', icon: <BellOutlined /> },
     { key: 'settings', label: 'Cài đặt', icon: <SettingOutlined /> },
   ];
 
