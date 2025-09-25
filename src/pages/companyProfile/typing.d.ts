@@ -7,6 +7,7 @@ declare namespace CompanyModule {
     jobType: string;
     timeLeft: string;
     location: string;
+    companyAvatar: string;
   };
 
   type Introduction = {

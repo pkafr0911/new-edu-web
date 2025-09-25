@@ -23,7 +23,7 @@ const JobList: React.FC<JobListProps> = ({ id }) => {
     const loadJobs = async () => {
       try {
         setLoading(true);
-        const res = await fetchListCompanyJobs(id, { current: 0, pageSize: 5 });
+        const res = await fetchListCompanyJobs(id, { current: 1, pageSize: 5 });
         setJobs(res.data);
       } catch (err) {
         console.error('Error fetching jobs', err);
@@ -59,7 +59,7 @@ const JobList: React.FC<JobListProps> = ({ id }) => {
                     <Avatar
                       shape="square"
                       style={{ height: 64, width: 64 }}
-                      src={'/company-logo.png'}
+                      src={job.companyAvatar || '/company-logo.png'}
                     />
                   }
                   title={
