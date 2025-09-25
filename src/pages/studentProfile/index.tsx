@@ -21,6 +21,10 @@ import {
   FilePdfOutlined,
   EditOutlined,
   PlusOutlined,
+  AppstoreOutlined,
+  ProfileOutlined,
+  TeamOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import './styles.less';
 
@@ -33,6 +37,7 @@ import {
   fetchStudentCertificates,
   fetchStudentJobBanner,
 } from './service';
+import './styles.less';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -49,6 +54,8 @@ const StudentProfile: React.FC = () => {
   const [certificates, setCertificates] = useState<StudentModule.CertificateItem[]>([]);
   const [jobBanner, setJobBanner] = useState<StudentModule.JobBannerData>();
   const [loading, setLoading] = useState(true);
+
+  const [activeTab, setActiveTab] = useState<string>('overview');
 
   // ✅ Fetch all profile data
   useEffect(() => {
@@ -98,6 +105,15 @@ const StudentProfile: React.FC = () => {
     );
   }
 
+  const sidebarItems = [
+    { key: 'overview', label: 'Tổng quan', icon: <AppstoreOutlined /> },
+    { key: 'my-jobs', label: 'Việc làm của tôi', icon: <ProfileOutlined /> },
+    { key: 'companies', label: 'Nhà tuyển dụng/Công ty', icon: <TeamOutlined /> },
+    { key: 'invitations', label: 'Lời mời công việc', icon: <MailOutlined /> },
+    { key: 'notifications', label: 'Thông báo', icon: <MailOutlined /> },
+    { key: 'settings', label: 'Cài đặt', icon: <SettingOutlined /> },
+  ];
+
   return (
     <Content className="student-profile">
       <Row gutter={24}>
@@ -107,16 +123,17 @@ const StudentProfile: React.FC = () => {
             <Title level={4}>Tài khoản</Title>
             <List
               itemLayout="horizontal"
-              dataSource={[
-                'Tổng quan',
-                'Việc làm của tôi',
-                'Nhà tuyển dụng/Công ty',
-                'Lời mời công việc',
-                'Thông báo',
-                'Cài đặt',
-              ]}
-              renderItem={(item, index) => (
-                <List.Item className={index === 0 ? 'active' : ''}>{item}</List.Item>
+              dataSource={sidebarItems}
+              renderItem={(item) => (
+                <List.Item
+                  className={item.key === activeTab ? 'active' : ''}
+                  onClick={() => setActiveTab(item.key)}
+                >
+                  <Space>
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </Space>
+                </List.Item>
               )}
             />
 
@@ -132,157 +149,207 @@ const StudentProfile: React.FC = () => {
 
         {/* Main Content */}
         <Col xs={24} md={18}>
-          {/* Profile Header */}
-          <Card className="profile-header" extra={<Button icon={<EditOutlined />}>Sửa</Button>}>
-            <Row gutter={16} align="middle">
-              <Col>
-                <Avatar size={96} src={banner?.education || undefined} />
-              </Col>
-              <Col flex="auto">
-                <Title level={4}>{banner?.name}</Title>
-                <Space direction="vertical" size={4}>
-                  <Text>
-                    <PhoneOutlined /> {banner?.phoneNumber}
-                  </Text>
-                  <Text>
-                    <MailOutlined /> {banner?.email}
-                  </Text>
-                  <Text>
-                    <EnvironmentOutlined /> {banner?.location}
-                  </Text>
-                  <Text>
-                    <BookOutlined /> {banner?.education}
-                  </Text>
+          {/* Overview Section */}
+          {activeTab === 'overview' && (
+            <>
+              {/* Profile Header */}
+              <Card className="profile-header" extra={<Button icon={<EditOutlined />}>Sửa</Button>}>
+                <Row gutter={16} align="middle">
+                  <Col>
+                    <Avatar size={96} src={banner?.education || undefined} />
+                  </Col>
+                  <Col flex="auto">
+                    <Title level={4}>{banner?.name}</Title>
+                    <Space direction="vertical" size={4}>
+                      <Text>
+                        <PhoneOutlined /> {banner?.phoneNumber}
+                      </Text>
+                      <Text>
+                        <MailOutlined /> {banner?.email}
+                      </Text>
+                      <Text>
+                        <EnvironmentOutlined /> {banner?.location}
+                      </Text>
+                      <Text>
+                        <BookOutlined /> {banner?.education}
+                      </Text>
+                    </Space>
+                  </Col>
+                </Row>
+              </Card>
+              {/* Stats */}
+              <Row gutter={16} className="stats-row">
+                <Col xs={12} md={6}>
+                  <Card className="stat-card">
+                    <Title level={4}>{jobBanner?.appliedJobs ?? 0}</Title>
+                    <Text>Đã ứng tuyển</Text>
+                  </Card>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Card className="stat-card">
+                    <Title level={4}>{jobBanner?.savedJobs ?? 0}</Title>
+                    <Text>Việc làm đã lưu</Text>
+                  </Card>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Card className="stat-card">
+                    <Title level={4}>{jobBanner?.completedJobs ?? 0}</Title>
+                    <Text>Việc đã làm</Text>
+                  </Card>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Card className="stat-card">
+                    <Title level={4}>{jobBanner?.rating ?? '-'}</Title>
+                    <Text>Đánh giá</Text>
+                  </Card>
+                </Col>
+              </Row>
+              {/* Personal Photos */}
+              <Card title="Ảnh cá nhân">
+                <Row gutter={16}>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Col key={i}>
+                      <img
+                        src={`https://i.pravatar.cc/150?img=${i + 10}`}
+                        alt="profile"
+                        className="profile-photo"
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              </Card>
+              {/* Bio */}
+              <Card title="Giới thiệu bản thân">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: description?.description || 'Chưa có mô tả bản thân.',
+                  }}
+                />
+              </Card>
+              {/* Job Preference */}
+              <Card title="Công việc mong muốn">
+                <Row gutter={16}>
+                  <Col span={6}>
+                    <Text strong>Mức lương mong muốn</Text>
+                    <p>{expectedJobs?.expectedSalary || '-'}</p>
+                  </Col>
+                  <Col span={6}>
+                    <Text strong>Nơi làm việc mong muốn</Text>
+                    <p>{expectedJobs?.expectedLocation || '-'}</p>
+                  </Col>
+                  <Col span={6}>
+                    <Text strong>Cấp bậc mong muốn</Text>
+                    <p>{expectedJobs?.level || '-'}</p>
+                  </Col>
+                  <Col span={6}>
+                    <Text strong>Ngành nghề</Text>
+                    <p>{expectedJobs?.industry || '-'}</p>
+                  </Col>
+                </Row>
+              </Card>
+              {/* Attached Files */}
+              <Card title="Hồ sơ đính kèm">
+                <Space>
+                  <FilePdfOutlined style={{ fontSize: 20 }} />
+                  <Text>CV Hà Ngọc Tú.pdf</Text>
+                  <Button type="link">Xem</Button>
                 </Space>
-              </Col>
-            </Row>
-          </Card>
-
-          {/* Stats */}
-          <Row gutter={16} className="stats-row">
-            <Col xs={12} md={6}>
-              <Card className="stat-card">
-                <Title level={4}>{jobBanner?.appliedJobs ?? 0}</Title>
-                <Text>Đã ứng tuyển</Text>
+                <p>Tải lên: 09/09/2020</p>
               </Card>
-            </Col>
-            <Col xs={12} md={6}>
-              <Card className="stat-card">
-                <Title level={4}>{jobBanner?.savedJobs ?? 0}</Title>
-                <Text>Việc làm đã lưu</Text>
+              {/* Skills */}
+              <Card title="Kỹ năng">
+                <Space wrap>
+                  {skills?.skills?.length ? (
+                    skills.skills.map((skill, idx) => <Tag key={idx}>{skill}</Tag>)
+                  ) : (
+                    <Text type="secondary">Chưa có kỹ năng nào</Text>
+                  )}
+                </Space>
               </Card>
-            </Col>
-            <Col xs={12} md={6}>
-              <Card className="stat-card">
-                <Title level={4}>{jobBanner?.completedJobs ?? 0}</Title>
-                <Text>Việc đã làm</Text>
+              {/* Education */}
+              <Card title="Học vấn" extra={<Button type="text" icon={<PlusOutlined />} />}>
+                <List
+                  itemLayout="vertical"
+                  dataSource={education}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          item.universityAvatarUrl && (
+                            <Avatar src={item.universityAvatarUrl} shape="square" />
+                          )
+                        }
+                        title={<Text strong>{item.universityName}</Text>}
+                        description={
+                          <>
+                            <div>{item.division}</div>
+                            <div>
+                              {item.startTime} - {item.endTime}
+                            </div>
+                            <div>GPA: {item.gpa}</div>
+                          </>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
               </Card>
-            </Col>
-            <Col xs={12} md={6}>
-              <Card className="stat-card">
-                <Title level={4}>{jobBanner?.rating ?? '-'}</Title>
-                <Text>Đánh giá</Text>
+              {/* Languages */}
+              <Card title="Ngoại ngữ" extra={<Button type="text" icon={<PlusOutlined />} />}>
+                <p>Tiếng Anh (Elementary)</p>
               </Card>
-            </Col>
-          </Row>
+              {/* Certificates */}
+              <Card
+                title="Bằng cấp & Chứng chỉ"
+                extra={<Button type="text" icon={<PlusOutlined />} />}
+              >
+                <List
+                  itemLayout="horizontal"
+                  dataSource={certificates}
+                  renderItem={(item) => (
+                    <List.Item
+                      actions={[
+                        <Button type="link" key="view">
+                          Xem
+                        </Button>,
+                      ]}
+                    >
+                      <List.Item.Meta
+                        avatar={
+                          item.certificateAvatarUrl && (
+                            <Avatar src={item.certificateAvatarUrl} shape="square" />
+                          )
+                        }
+                        title={item.certificateName}
+                        description={`${item.issuer} · ${item.issueDate}`}
+                      />
+                    </List.Item>
+                  )}
+                />
+              </Card>
+            </>
+          )}
 
-          {/* Bio */}
-          <Card title="Giới thiệu bản thân">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: description?.description || 'Chưa có mô tả bản thân.',
-              }}
-            />
-          </Card>
+          {activeTab === 'my-jobs' && (
+            <Card>
+              <Title level={4}>📁 Việc làm của tôi</Title>
+              <p>Danh sách các công việc bạn đã ứng tuyển sẽ xuất hiện ở đây...</p>
+            </Card>
+          )}
 
-          {/* Job Preference */}
-          <Card title="Công việc mong muốn">
-            <Row gutter={16}>
-              <Col span={6}>
-                <Text strong>Mức lương mong muốn</Text>
-                <p>{expectedJobs?.expectedSalary || '-'}</p>
-              </Col>
-              <Col span={6}>
-                <Text strong>Nơi làm việc mong muốn</Text>
-                <p>{expectedJobs?.expectedLocation || '-'}</p>
-              </Col>
-              <Col span={6}>
-                <Text strong>Cấp bậc mong muốn</Text>
-                <p>{expectedJobs?.level || '-'}</p>
-              </Col>
-              <Col span={6}>
-                <Text strong>Ngành nghề</Text>
-                <p>{expectedJobs?.industry || '-'}</p>
-              </Col>
-            </Row>
-          </Card>
+          {activeTab === 'companies' && (
+            <Card>
+              <Title level={4}>🏢 Nhà tuyển dụng / Công ty</Title>
+              <p>Thông tin nhà tuyển dụng bạn đã tương tác...</p>
+            </Card>
+          )}
 
-          {/* Skills */}
-          <Card title="Kỹ năng">
-            <Space wrap>
-              {skills?.skills?.length ? (
-                skills.skills.map((skill, idx) => <Tag key={idx}>{skill}</Tag>)
-              ) : (
-                <Text type="secondary">Chưa có kỹ năng nào</Text>
-              )}
-            </Space>
-          </Card>
-
-          {/* Education */}
-          <Card title="Học vấn" extra={<Button type="text" icon={<PlusOutlined />} />}>
-            <List
-              itemLayout="vertical"
-              dataSource={education}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={
-                      item.universityAvatarUrl && (
-                        <Avatar src={item.universityAvatarUrl} shape="square" />
-                      )
-                    }
-                    title={<Text strong>{item.universityName}</Text>}
-                    description={
-                      <>
-                        <div>{item.division}</div>
-                        <div>
-                          {item.startTime} - {item.endTime}
-                        </div>
-                        <div>GPA: {item.gpa}</div>
-                      </>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
-          </Card>
-
-          {/* Certificates */}
-          <Card title="Bằng cấp & Chứng chỉ" extra={<Button type="text" icon={<PlusOutlined />} />}>
-            <List
-              itemLayout="horizontal"
-              dataSource={certificates}
-              renderItem={(item) => (
-                <List.Item
-                  actions={[
-                    <Button type="link" key="view">
-                      Xem
-                    </Button>,
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={
-                      item.certificateAvatarUrl && (
-                        <Avatar src={item.certificateAvatarUrl} shape="square" />
-                      )
-                    }
-                    title={item.certificateName}
-                    description={`${item.issuer} · ${item.issueDate}`}
-                  />
-                </List.Item>
-              )}
-            />
-          </Card>
+          {activeTab === 'settings' && (
+            <Card>
+              <Title level={4}>⚙️ Cài đặt tài khoản</Title>
+              <p>Thay đổi thông tin cá nhân, bảo mật, và tùy chỉnh tài khoản tại đây.</p>
+            </Card>
+          )}
         </Col>
       </Row>
     </Content>
