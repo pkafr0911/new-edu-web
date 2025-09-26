@@ -39,6 +39,7 @@ import {
 } from './service';
 import './styles.less';
 import { AboutMeModal, BasicInfoModal, DesiredJobModal } from './components';
+import { colorFromName } from '@/helpers';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -161,15 +162,35 @@ const StudentProfile: React.FC = () => {
               <Card
                 className="profile-header"
                 extra={
-                  <Button icon={<EditOutlined />} onClick={() => setIsBasicInfoOpen(true)}>
-                    Sửa
-                  </Button>
+                  <Button
+                    type="text"
+                    icon={<EditOutlined />}
+                    onClick={() => setIsBasicInfoOpen(true)}
+                  />
                 }
               >
                 <Row gutter={16} align="middle">
                   <Col>
-                    <Avatar size={96} src={banner?.education || undefined} />
+                    <Avatar
+                      size={120}
+                      src={banner?.education || undefined}
+                      style={{
+                        backgroundColor: colorFromName(banner?.name || '?'),
+                        fontSize: 36,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onError={() => true} // force fallback to text if image fails
+                    >
+                      {banner?.name
+                        ?.split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .toUpperCase() || '?'}
+                    </Avatar>
                   </Col>
+
                   <Col flex="auto">
                     <Title level={4}>{banner?.name}</Title>
                     <Space direction="vertical" size={4}>
@@ -197,32 +218,42 @@ const StudentProfile: React.FC = () => {
               />
 
               {/* Stats */}
-              <Row gutter={16} className="stats-row">
-                <Col xs={12} md={6}>
-                  <Card className="stat-card">
-                    <Title level={4}>{jobBanner?.appliedJobs ?? 0}</Title>
-                    <Text>Đã ứng tuyển</Text>
-                  </Card>
-                </Col>
-                <Col xs={12} md={6}>
-                  <Card className="stat-card">
-                    <Title level={4}>{jobBanner?.savedJobs ?? 0}</Title>
-                    <Text>Việc làm đã lưu</Text>
-                  </Card>
-                </Col>
-                <Col xs={12} md={6}>
-                  <Card className="stat-card">
-                    <Title level={4}>{jobBanner?.completedJobs ?? 0}</Title>
-                    <Text>Việc đã làm</Text>
-                  </Card>
-                </Col>
-                <Col xs={12} md={6}>
-                  <Card className="stat-card">
-                    <Title level={4}>{jobBanner?.rating ?? '-'}</Title>
-                    <Text>Đánh giá</Text>
-                  </Card>
-                </Col>
-              </Row>
+              <Card>
+                <Row gutter={16} className="stats-row">
+                  <Col xs={12} md={6}>
+                    <Card className="stat-card" style={{ background: '#EFF6FF' }}>
+                      <Title level={4}>Đã ứng tuyển</Title>
+                      <Title level={3} style={{ color: '#2563EB' }}>
+                        {jobBanner?.appliedJobs ?? 0}
+                      </Title>
+                    </Card>
+                  </Col>
+                  <Col xs={12} md={6}>
+                    <Card className="stat-card" style={{ background: '#FEF2F2' }}>
+                      <Title level={4}>Việc làm đã lưu</Title>
+                      <Title level={3} style={{ color: '#EF4444' }}>
+                        {jobBanner?.savedJobs ?? 0}
+                      </Title>
+                    </Card>
+                  </Col>
+                  <Col xs={12} md={6}>
+                    <Card className="stat-card" style={{ background: '#F0FDF4' }}>
+                      <Title level={4}>Việc đã làm</Title>
+                      <Title level={3} style={{ color: '#16A34A' }}>
+                        {jobBanner?.completedJobs ?? 0}
+                      </Title>
+                    </Card>
+                  </Col>
+                  <Col xs={12} md={6}>
+                    <Card className="stat-card" style={{ background: '#FFF7ED' }}>
+                      <Title level={4}>Đánh giá</Title>
+                      <Title level={3} style={{ color: '#F97316' }}>
+                        {jobBanner?.rating ?? '-'} ★
+                      </Title>
+                    </Card>
+                  </Col>
+                </Row>
+              </Card>
               {/* Personal Photos */}
               <Card title="Ảnh cá nhân">
                 <Row gutter={16}>
@@ -241,9 +272,11 @@ const StudentProfile: React.FC = () => {
               <Card
                 title="Giới thiệu bản thân"
                 extra={
-                  <Button icon={<EditOutlined />} onClick={() => setIsAboutMeOpen(true)}>
-                    Sửa
-                  </Button>
+                  <Button
+                    type="text"
+                    icon={<EditOutlined />}
+                    onClick={() => setIsAboutMeOpen(true)}
+                  />
                 }
               >
                 <div
@@ -263,9 +296,11 @@ const StudentProfile: React.FC = () => {
                 title="Công việc mong muốn"
                 className="profile-header"
                 extra={
-                  <Button icon={<EditOutlined />} onClick={() => setIsDesiredJobOpen(true)}>
-                    Sửa
-                  </Button>
+                  <Button
+                    type="text"
+                    icon={<EditOutlined />}
+                    onClick={() => setIsDesiredJobOpen(true)}
+                  />
                 }
               >
                 <Row gutter={16}>
