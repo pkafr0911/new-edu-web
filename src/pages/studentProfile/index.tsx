@@ -27,7 +27,6 @@ import {
   SettingOutlined,
   BellOutlined,
 } from '@ant-design/icons';
-import './styles.less';
 
 import {
   fetchStudentBanner,
