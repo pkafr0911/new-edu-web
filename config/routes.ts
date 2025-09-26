@@ -84,30 +84,6 @@ export default [
       },
     ],
   },
-  // Public
-
-  {
-    path: '/public',
-    name: 'public', // Title for the public page
-    layout: false,
-    routes: [
-      {
-        name: 'registerIframe', // Title for the register
-        path: '/public/register/iframe/:summitId/:guestTypeId',
-        component: './Public/RegisterIframe', // Component for the register
-      },
-      {
-        name: 'register', // Title for the register
-        path: '/public/register/:summitId/:guestTypeId',
-        component: './Public/Register', // Component for the register
-      },
-      {
-        name: 'confirmCheckIn', // Title for the confirmCheckIn
-        path: '/public/confirm-check-in/:summitId',
-        component: './Public/ConfirmCheckInEvent', // Component for the confirmCheckIn
-      },
-    ],
-  },
 
   // Default redirect to the home page
   {

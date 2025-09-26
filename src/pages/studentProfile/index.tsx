@@ -39,7 +39,7 @@ import {
   fetchStudentJobBanner,
 } from './service';
 import './styles.less';
-import { BasicInfoModal } from './components';
+import { AboutMeModal, BasicInfoModal, DesiredJobModal } from './components';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -60,6 +60,8 @@ const StudentProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('overview');
 
   const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(false);
+  const [isDesiredJobOpen, setIsDesiredJobOpen] = useState(false);
+  const [isAboutMeOpen, setIsAboutMeOpen] = useState(false);
 
   // ✅ Fetch all profile data
   useEffect(() => {
@@ -155,7 +157,7 @@ const StudentProfile: React.FC = () => {
         <Col xs={24} md={18}>
           {/* Overview Section */}
           {activeTab === 'overview' && (
-            <>
+            <Space direction="vertical" style={{ width: '100%' }}>
               {/* Profile Header */}
               <Card
                 className="profile-header"
@@ -237,34 +239,69 @@ const StudentProfile: React.FC = () => {
                 </Row>
               </Card>
               {/* Bio */}
-              <Card title="Giới thiệu bản thân">
+              <Card
+                title="Giới thiệu bản thân"
+                extra={
+                  <Button icon={<EditOutlined />} onClick={() => setIsAboutMeOpen(true)}>
+                    Sửa
+                  </Button>
+                }
+              >
                 <div
                   dangerouslySetInnerHTML={{
                     __html: description?.description || 'Chưa có mô tả bản thân.',
                   }}
                 />
               </Card>
+
+              <AboutMeModal
+                open={isAboutMeOpen}
+                onCancel={() => setIsAboutMeOpen(false)}
+                initialValue={description?.description}
+              />
               {/* Job Preference */}
-              <Card title="Công việc mong muốn">
+              <Card
+                title="Công việc mong muốn"
+                className="profile-header"
+                extra={
+                  <Button icon={<EditOutlined />} onClick={() => setIsDesiredJobOpen(true)}>
+                    Sửa
+                  </Button>
+                }
+              >
                 <Row gutter={16}>
-                  <Col span={6}>
+                  <Col span={8}>
                     <Text strong>Mức lương mong muốn</Text>
                     <p>{expectedJobs?.expectedSalary || '-'}</p>
                   </Col>
-                  <Col span={6}>
+                  <Col span={8}>
                     <Text strong>Nơi làm việc mong muốn</Text>
                     <p>{expectedJobs?.expectedLocation || '-'}</p>
                   </Col>
-                  <Col span={6}>
+                  <Col span={8}>
                     <Text strong>Cấp bậc mong muốn</Text>
                     <p>{expectedJobs?.level || '-'}</p>
                   </Col>
-                  <Col span={6}>
+                  <Col span={8}>
+                    <Text strong>Hình thức làm việc</Text>
+                    <p>{expectedJobs?.expectedJobType || '-'}</p>
+                  </Col>
+                  <Col span={8}>
                     <Text strong>Ngành nghề</Text>
                     <p>{expectedJobs?.industry || '-'}</p>
                   </Col>
+                  <Col span={8}>
+                    <Text strong>Có người hướng dẫn làm việc</Text>
+                    <p>{expectedJobs?.isNeedMentor || '-'}</p>
+                  </Col>
                 </Row>
               </Card>
+
+              <DesiredJobModal
+                open={isDesiredJobOpen}
+                onCancel={() => setIsDesiredJobOpen(false)}
+                initialValues={expectedJobs}
+              />
               {/* Attached Files */}
               <Card title="Hồ sơ đính kèm">
                 <Space>
@@ -274,6 +311,7 @@ const StudentProfile: React.FC = () => {
                 </Space>
                 <p>Tải lên: 09/09/2020</p>
               </Card>
+
               {/* Skills */}
               <Card title="Kỹ năng">
                 <Space wrap>
@@ -345,7 +383,7 @@ const StudentProfile: React.FC = () => {
                   )}
                 />
               </Card>
-            </>
+            </Space>
           )}
 
           {activeTab === 'my-jobs' && (

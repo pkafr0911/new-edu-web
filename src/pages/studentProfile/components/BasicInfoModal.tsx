@@ -1,3 +1,4 @@
+import React from 'react';
 import { Avatar, Button, Col, Form, Input, Modal, Row, Select, Space } from 'antd';
 
 const BasicInfoModal: React.FC<{
@@ -5,6 +6,7 @@ const BasicInfoModal: React.FC<{
   onCancel: () => void;
   initialValues?: StudentModule.BannerData;
 }> = ({ open, onCancel, initialValues }) => {
+  const [form] = Form.useForm();
   return (
     <Modal
       width={896}
@@ -16,6 +18,7 @@ const BasicInfoModal: React.FC<{
     >
       <Form
         layout="vertical"
+        form={form}
         initialValues={initialValues}
         onFinish={(values) => console.log('Submitted:', values)}
       >
