@@ -39,6 +39,7 @@ import {
   fetchStudentJobBanner,
 } from './service';
 import './styles.less';
+import { BasicInfoModal } from './components';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -57,6 +58,8 @@ const StudentProfile: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState<string>('overview');
+
+  const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(false);
 
   // ✅ Fetch all profile data
   useEffect(() => {
@@ -154,7 +157,14 @@ const StudentProfile: React.FC = () => {
           {activeTab === 'overview' && (
             <>
               {/* Profile Header */}
-              <Card className="profile-header" extra={<Button icon={<EditOutlined />}>Sửa</Button>}>
+              <Card
+                className="profile-header"
+                extra={
+                  <Button icon={<EditOutlined />} onClick={() => setIsBasicInfoOpen(true)}>
+                    Sửa
+                  </Button>
+                }
+              >
                 <Row gutter={16} align="middle">
                   <Col>
                     <Avatar size={96} src={banner?.education || undefined} />
@@ -178,6 +188,13 @@ const StudentProfile: React.FC = () => {
                   </Col>
                 </Row>
               </Card>
+
+              <BasicInfoModal
+                open={isBasicInfoOpen}
+                onCancel={() => setIsBasicInfoOpen(false)}
+                initialValues={banner}
+              />
+
               {/* Stats */}
               <Row gutter={16} className="stats-row">
                 <Col xs={12} md={6}>
