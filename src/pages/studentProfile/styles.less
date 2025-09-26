@@ -1,15 +1,36 @@
 .student-profile {
   padding: 24px;
-  background: #f5f7fa;
+  background: #f9fafb;
+  min-height: 100vh;
 
   .sidebar-card {
+    position: sticky;
+    top: 24px;
+    border-radius: 16px;
+
     .ant-list-item {
-      padding: 8px 0;
       cursor: pointer;
+      padding: 8px 16px;
+      transition: background 0.3s;
+
+      &:hover {
+        background: fade(#173da6, 10%);
+        border-radius: 16px;
+      }
 
       &.active {
+        background: #173da6;
+        color: #fff;
         font-weight: 600;
-        color: #1890ff;
+        border-radius: 8px;
+
+        svg {
+          color: #fff;
+        }
+      }
+
+      svg {
+        color: @primary-color;
       }
     }
 
@@ -26,38 +47,106 @@
   }
 
   .profile-header {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    border-radius: 16px;
 
     .ant-typography {
-      margin: 0;
+      margin-bottom: 0;
+    }
+
+    .ant-space {
+      margin-top: 8px;
+
+      .ant-typography {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
     }
   }
 
   .stats-row {
-    margin: 16px 0;
+    margin-bottom: 24px;
 
     .stat-card {
       text-align: center;
       border-radius: 12px;
 
+      .ant-typography {
+        margin-bottom: 4px;
+      }
+
       h4 {
-        margin: 0;
+        color: #1890ff;
+        font-weight: bold;
       }
     }
   }
 
   .profile-photo {
-    border-radius: 8px;
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    max-width: 120px;
+    border-radius: 12px;
     object-fit: cover;
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .ant-card {
+    margin-bottom: 24px;
+    border-radius: 16px;
+
+    .ant-card-head {
+      font-weight: bold;
+    }
+  }
+
+  .ant-tag {
+    font-size: 14px;
+    padding: 4px 12px;
+    // border-radius: 20px;
+    background: #ffffff;
+    // color: #1890ff;
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+
+    li {
+      line-height: 1.8;
+      color: #555;
+    }
   }
 }
 
-.ant-card {
-  margin-bottom: 16px;
+/* Responsive */
+@media (max-width: 768px) {
+  .student-profile {
+    padding: 12px;
+
+    .sidebar-card {
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .profile-photo {
+      max-width: 100px;
+    }
+  }
 }
 
-.ant-list-item {
-  padding: 12px 0;
+.ant-modal-content {
+  border-radius: 12px;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+}
+
+.ant-avatar {
+  border: 2px solid @colorPrimary;
 }

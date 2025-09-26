@@ -24,7 +24,7 @@ const CompanyTabs: React.FC<{
           <>
             <GeneralInfo intro={intro} />
             <Introduction descHtml={descHtml} />
-            <JobList companyId={id} />
+            <JobList id={id} />
           </>
         )}
         {activeTab === 'Đánh giá' && <Reviews />}
