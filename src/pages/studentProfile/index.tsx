@@ -38,7 +38,7 @@ import {
   fetchStudentJobBanner,
 } from './service';
 import './styles.less';
-import { AboutMeModal, BasicInfoModal, DesiredJobModal } from './components';
+import { AboutMeModal, BasicInfoModal, DesiredJobModal, WorkExperienceModal } from './components';
 import { colorFromName } from '@/helpers';
 
 const { Content } = Layout;
@@ -62,6 +62,7 @@ const StudentProfile: React.FC = () => {
   const [isBasicInfoOpen, setIsBasicInfoOpen] = useState(false);
   const [isDesiredJobOpen, setIsDesiredJobOpen] = useState(false);
   const [isAboutMeOpen, setIsAboutMeOpen] = useState(false);
+  const [isWorkExperienceOpen, setIsWorkExperienceOpen] = useState(false);
 
   // ✅ Fetch all profile data
   useEffect(() => {
@@ -356,6 +357,75 @@ const StudentProfile: React.FC = () => {
                   )}
                 </Space>
               </Card>
+
+              {/* Work Experience */}
+              <Card
+                title="Kinh nghiệm làm việc"
+                extra={
+                  <Button
+                    type="text"
+                    icon={<PlusOutlined />}
+                    onClick={() => setIsWorkExperienceOpen(true)}
+                  />
+                }
+              >
+                <List
+                  itemLayout="vertical"
+                  dataSource={[
+                    {
+                      company: 'Vietcombank',
+                      position: 'Internship Designer',
+                      time: '04/2024 - 12/2024',
+                      description: [
+                        'In-charge group project',
+                        'Design website and UI/UX improve product features',
+                        'Support project members with design communication',
+                      ],
+                    },
+                    {
+                      company: 'MBBank',
+                      position: 'Internship Designer',
+                      time: '04/2024 - 12/2024',
+                      description: [
+                        'Building consulting script and HR training process',
+                        'Supporting internal communication events',
+                        'Advising and guidance about suitable IT training courses',
+                      ],
+                    },
+                  ]}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        title={
+                          <Space>
+                            <Avatar shape="square" size="large">
+                              {item.company[0]}
+                            </Avatar>
+                            <div>
+                              <Text strong>{item.position}</Text>
+                              <div>
+                                {item.company} · {item.time}
+                              </div>
+                            </div>
+                          </Space>
+                        }
+                      />
+                      <ul>
+                        {item.description.map((d, i) => (
+                          <li key={i}>{d}</li>
+                        ))}
+                      </ul>
+                    </List.Item>
+                  )}
+                />
+              </Card>
+
+              <WorkExperienceModal
+                open={isWorkExperienceOpen}
+                onCancel={() => setIsWorkExperienceOpen(false)}
+                // initialValues={null}
+              />
+
               {/* Education */}
               <Card title="Học vấn" extra={<Button type="text" icon={<PlusOutlined />} />}>
                 <List
