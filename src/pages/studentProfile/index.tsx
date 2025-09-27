@@ -38,7 +38,13 @@ import {
   fetchStudentJobBanner,
 } from './service';
 import './styles.less';
-import { AboutMeModal, BasicInfoModal, DesiredJobModal, WorkExperienceModal } from './components';
+import {
+  AboutMeModal,
+  AttachedFilesModal,
+  BasicInfoModal,
+  DesiredJobModal,
+  WorkExperienceModal,
+} from './components';
 import { colorFromName } from '@/helpers';
 
 const { Content } = Layout;
@@ -63,6 +69,9 @@ const StudentProfile: React.FC = () => {
   const [isDesiredJobOpen, setIsDesiredJobOpen] = useState(false);
   const [isAboutMeOpen, setIsAboutMeOpen] = useState(false);
   const [isWorkExperienceOpen, setIsWorkExperienceOpen] = useState(false);
+  const [isAttachedFilesOpen, setIsAttachedFilesOpen] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState<string>('CV Hà Ngọc Tú.pdf');
 
   // ✅ Fetch all profile data
   useEffect(() => {
@@ -338,14 +347,32 @@ const StudentProfile: React.FC = () => {
                 initialValues={expectedJobs}
               />
               {/* Attached Files */}
-              <Card title="Hồ sơ đính kèm">
+              <Card
+                title="Hồ sơ đính kèm"
+                extra={
+                  <Button
+                    type="text"
+                    icon={<PlusOutlined />}
+                    onClick={() => setIsAttachedFilesOpen(true)}
+                  />
+                }
+              >
                 <Space>
-                  <FilePdfOutlined style={{ fontSize: 20 }} />
-                  <Text>CV Hà Ngọc Tú.pdf</Text>
+                  <FilePdfOutlined style={{ fontSize: 20, color: '#d32f2f' }} />
+                  <Text>{selectedFile}</Text>
                   <Button type="link">Xem</Button>
                 </Space>
                 <p>Tải lên: 09/09/2020</p>
               </Card>
+
+              <AttachedFilesModal
+                open={isAttachedFilesOpen}
+                onCancel={() => setIsAttachedFilesOpen(false)}
+                onSubmit={(file) => {
+                  setSelectedFile(file);
+                  setIsAttachedFilesOpen(false);
+                }}
+              />
 
               {/* Skills */}
               <Card title="Kỹ năng">
