@@ -130,6 +130,32 @@ const StudentProfile: React.FC = () => {
     { key: 'settings', label: 'Cài đặt', icon: <SettingOutlined /> },
   ];
 
+  const calculateProfileCompletion = () => {
+    const sections = [
+      banner,
+      skills?.skills?.length ? skills : null,
+      expectedJobs,
+      education?.length ? education : null,
+      description?.description ? description : null,
+      certificates?.length ? certificates : null,
+      jobBanner,
+    ];
+
+    const filledSections = sections.filter((section) => section !== null && section !== undefined);
+    const percent = Math.round((filledSections.length / sections.length) * 100);
+
+    return percent;
+  };
+
+  const percent = calculateProfileCompletion();
+
+  const getProgressColor = (percent: number) => {
+    if (percent < 40) return '#ff4d4f'; // 🔴 red – low progress
+    if (percent < 70) return 'default'; //
+    if (percent < 100) return '#faad14'; // 🟠 orange – medium progress
+    return '#52c41a'; // 🟢 green – good progress
+  };
+
   return (
     <Content className="student-profile">
       <Row gutter={24}>
@@ -154,10 +180,16 @@ const StudentProfile: React.FC = () => {
             />
 
             <div className="progress-section">
-              <Progress type="circle" percent={75} size={100} strokeColor="#1890ff" />
-              <p>
-                Woww! Làm 100% luôn bạn ơi, rất nhiều nhà tuyển dụng đã sẵn sàng để đón bạn đó
-                nha!!!
+              <Progress
+                type="circle"
+                percent={percent}
+                size={100}
+                strokeColor={getProgressColor(percent)}
+              />
+              <p style={{ color: getProgressColor(percent) }}>
+                {percent === 100
+                  ? 'Woww! Làm 100% luôn bạn ơi, rất nhiều nhà tuyển dụng đã sẵn sàng để đón bạn đó nha!!!'
+                  : `Bạn đã hoàn thành ${percent}% hồ sơ — hoàn thiện thêm để thu hút nhiều nhà tuyển dụng hơn!`}
               </p>
             </div>
           </Card>
@@ -168,7 +200,7 @@ const StudentProfile: React.FC = () => {
           {/* Overview Section */}
           {activeTab === 'overview' && (
             <Space direction="vertical" style={{ width: '100%' }}>
-              {/* Profile Header */}
+              {/* Profile Header    */}
               <Card
                 className="profile-header"
                 extra={
