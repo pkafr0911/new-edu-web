@@ -101,8 +101,8 @@ const StudentProfile: React.FC = () => {
         setExpectedJobs(expectedJobsData);
         setEducation(educationRes.data);
         setDescription(descriptionData);
-        // setCertificates(certificatesData);
-        // setJobBanner(jobBannerData);
+        setCertificates(certificatesData);
+        setJobBanner(jobBannerData);
       } catch (error) {
         console.error('Failed to fetch student profile:', error);
       } finally {
