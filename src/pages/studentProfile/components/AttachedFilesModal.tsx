@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, Radio, Space, Button, Upload, Typography, message } from 'antd';
-import { InboxOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { Modal, Radio, Space, Button, Upload, Typography, message, Popconfirm } from 'antd';
+import { InboxOutlined, FilePdfOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 const { Dragger } = Upload;
@@ -27,6 +27,15 @@ const AttachedFilesModal: React.FC<AttachedFilesModalProps> = ({ open, onCancel,
     const newFile = { name: file.name, uploadedAt: new Date().toLocaleDateString() };
     setFileList((prev) => [...prev, newFile]);
     message.success('Tải lên thành công');
+  };
+
+  // 🗑️ Delete a file from fileList
+  const handleDelete = (fileName: string) => {
+    setFileList((prev) => prev.filter((file) => file.name !== fileName));
+    if (selectedFile === fileName) {
+      setSelectedFile(undefined); // clear selection if deleted
+    }
+    message.success('Đã xóa hồ sơ');
   };
 
   return (
@@ -90,7 +99,18 @@ const AttachedFilesModal: React.FC<AttachedFilesModalProps> = ({ open, onCancel,
                   </div>
                 </Space>
               </Radio>
-              <Button type="link">Xem</Button>
+
+              <Space>
+                <Button type="link">Xem</Button>
+                <Popconfirm
+                  title="Xóa hồ sơ này?"
+                  okText="Xóa"
+                  cancelText="Hủy"
+                  onConfirm={() => handleDelete(file.name)}
+                >
+                  <Button type="link" danger icon={<DeleteOutlined />} />
+                </Popconfirm>
+              </Space>
             </div>
           ))}
         </Space>

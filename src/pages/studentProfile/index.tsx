@@ -101,8 +101,8 @@ const StudentProfile: React.FC = () => {
         setExpectedJobs(expectedJobsData);
         setEducation(educationRes.data);
         setDescription(descriptionData);
-        setCertificates(certificatesData);
-        setJobBanner(jobBannerData);
+        // setCertificates(certificatesData);
+        // setJobBanner(jobBannerData);
       } catch (error) {
         console.error('Failed to fetch student profile:', error);
       } finally {
@@ -180,11 +180,13 @@ const StudentProfile: React.FC = () => {
             />
 
             <div className="progress-section">
+              <Title level={4}>Hoàn thành hồ sơ</Title>
               <Progress
                 type="circle"
                 percent={percent}
-                size={100}
+                size={160}
                 strokeColor={getProgressColor(percent)}
+                className="custom-progress-circle"
               />
               <p style={{ color: getProgressColor(percent) }}>
                 {percent === 100
