@@ -36,6 +36,8 @@ import {
   fetchStudentDescription,
   fetchStudentCertificates,
   fetchStudentJobBanner,
+  fetchStudentExperiences,
+  fetchStudentLanguages,
 } from './service';
 import './styles.less';
 import {
@@ -43,6 +45,7 @@ import {
   AttachedFilesModal,
   BasicInfoModal,
   DesiredJobModal,
+  LanguageModal,
   WorkExperienceModal,
 } from './components';
 import { colorFromName } from '@/helpers';
@@ -61,6 +64,8 @@ const StudentProfile: React.FC = () => {
   const [description, setDescription] = useState<StudentModule.DescriptionData>();
   const [certificates, setCertificates] = useState<StudentModule.CertificateItem[]>([]);
   const [jobBanner, setJobBanner] = useState<StudentModule.JobBannerData>();
+  const [experiences, setExperiences] = useState<StudentModule.ExperienceItem[]>([]);
+  const [languages, setLanguages] = useState<StudentModule.LanguageItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState<string>('overview');
@@ -70,6 +75,7 @@ const StudentProfile: React.FC = () => {
   const [isAboutMeOpen, setIsAboutMeOpen] = useState(false);
   const [isWorkExperienceOpen, setIsWorkExperienceOpen] = useState(false);
   const [isAttachedFilesOpen, setIsAttachedFilesOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState<string>('CV Hà Ngọc Tú.pdf');
 
@@ -86,6 +92,8 @@ const StudentProfile: React.FC = () => {
           descriptionData,
           certificatesData,
           jobBannerData,
+          experiencesRes,
+          languagesData, // ← add here
         ] = await Promise.all([
           fetchStudentBanner(id),
           fetchStudentSkills(id),
@@ -94,8 +102,11 @@ const StudentProfile: React.FC = () => {
           fetchStudentDescription(id),
           fetchStudentCertificates(id),
           fetchStudentJobBanner(id),
+          fetchStudentExperiences(id, { current: 1, pageSize: 5 }),
+          fetchStudentLanguages(id), // ← new fetch
         ]);
 
+        // ✅ set the new data
         setBanner(bannerData);
         setSkills(skillsData);
         setExpectedJobs(expectedJobsData);
@@ -103,6 +114,8 @@ const StudentProfile: React.FC = () => {
         setDescription(descriptionData);
         setCertificates(certificatesData);
         setJobBanner(jobBannerData);
+        setExperiences(experiencesRes.data);
+        setLanguages(languagesData);
       } catch (error) {
         console.error('Failed to fetch student profile:', error);
       } finally {
@@ -217,7 +230,7 @@ const StudentProfile: React.FC = () => {
                   <Col>
                     <Avatar
                       size={120}
-                      src={banner?.education || undefined}
+                      src={banner?.avatarUrl || undefined}
                       style={{
                         backgroundColor: colorFromName(banner?.name || '?'),
                         fontSize: 36,
@@ -432,50 +445,35 @@ const StudentProfile: React.FC = () => {
               >
                 <List
                   itemLayout="vertical"
-                  dataSource={[
-                    {
-                      company: 'Vietcombank',
-                      position: 'Internship Designer',
-                      time: '04/2024 - 12/2024',
-                      description: [
-                        'In-charge group project',
-                        'Design website and UI/UX improve product features',
-                        'Support project members with design communication',
-                      ],
-                    },
-                    {
-                      company: 'MBBank',
-                      position: 'Internship Designer',
-                      time: '04/2024 - 12/2024',
-                      description: [
-                        'Building consulting script and HR training process',
-                        'Supporting internal communication events',
-                        'Advising and guidance about suitable IT training courses',
-                      ],
-                    },
-                  ]}
+                  dataSource={experiences}
                   renderItem={(item) => (
-                    <List.Item>
+                    <List.Item key={item.id}>
                       <List.Item.Meta
-                        title={
-                          <Space>
+                        avatar={
+                          item.companyAvatarUrl ? (
+                            <Avatar src={item.companyAvatarUrl} shape="square" size="large" />
+                          ) : (
                             <Avatar shape="square" size="large">
-                              {item.company[0]}
+                              {item.companyName[0]}
                             </Avatar>
+                          )
+                        }
+                        title={
+                          <Space direction="vertical" size={2}>
+                            <Text strong>{item.title}</Text>
                             <div>
-                              <Text strong>{item.position}</Text>
-                              <div>
-                                {item.company} · {item.time}
-                              </div>
+                              {item.companyName} · {item.jobType}
+                            </div>
+                            <div>
+                              {new Date(item.startDate).toLocaleDateString()} -{' '}
+                              {item.endDate
+                                ? new Date(item.endDate).toLocaleDateString()
+                                : 'Hiện tại'}
                             </div>
                           </Space>
                         }
                       />
-                      <ul>
-                        {item.description.map((d, i) => (
-                          <li key={i}>{d}</li>
-                        ))}
-                      </ul>
+                      <div dangerouslySetInnerHTML={{ __html: item.description }} />
                     </List.Item>
                   )}
                 />
@@ -516,9 +514,38 @@ const StudentProfile: React.FC = () => {
                 />
               </Card>
               {/* Languages */}
-              <Card title="Ngoại ngữ" extra={<Button type="text" icon={<PlusOutlined />} />}>
-                <p>Tiếng Anh (Elementary)</p>
+              <Card
+                title="Ngoại ngữ"
+                extra={
+                  <Button
+                    type="text"
+                    icon={<PlusOutlined onClick={() => setLanguageOpen(true)} />}
+                  />
+                }
+              >
+                {languages?.length ? (
+                  <List
+                    dataSource={languages}
+                    renderItem={(lang) => (
+                      <List.Item key={lang.id}>
+                        <Text strong>{lang.language}</Text> - <Text>{lang.level}</Text>
+                      </List.Item>
+                    )}
+                  />
+                ) : (
+                  <Text type="secondary">Chưa có thông tin ngoại ngữ</Text>
+                )}
               </Card>
+
+              <LanguageModal
+                open={languageOpen}
+                onCancel={() => setLanguageOpen(false)}
+                onSubmit={(values) => {
+                  console.log('Language saved:', values);
+                  setLanguageOpen(false);
+                }}
+              />
+
               {/* Certificates */}
               <Card
                 title="Bằng cấp & Chứng chỉ"

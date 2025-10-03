@@ -70,3 +70,30 @@ export const fetchStudentJobBanner = (id: string) =>
   request<Res<StudentModule.JobBannerData>>(prefix + `/${id}/jobbanner`, {
     method: 'GET',
   }).then(({ data }) => data);
+
+/**
+ * Fetch student's work experiences
+ */
+export const fetchStudentExperiences = (
+  id: string,
+  { current = 1, pageSize = 5, ...rest }: { current?: number; pageSize?: number } = {},
+) =>
+  request<Res<ResListData<StudentModule.ExperienceItem>>>(prefix + `/${id}/experiences`, {
+    method: 'GET',
+    params: {
+      offset: current,
+      limit: pageSize,
+      ...rest,
+    },
+  }).then(({ data }) => ({
+    data: data.content,
+    total: data.totalElements,
+  }));
+
+/**
+ * Fetch student's languages
+ */
+export const fetchStudentLanguages = (id: string) =>
+  request<Res<StudentModule.LanguageItem[]>>(prefix + `/${id}/languages`, {
+    method: 'GET',
+  }).then(({ data }) => data);
