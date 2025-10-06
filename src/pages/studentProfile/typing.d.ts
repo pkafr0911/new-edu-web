@@ -38,9 +38,10 @@ declare namespace StudentModule {
   type CertificateItem = {
     id: number;
     certificateName: string;
-    certificateAvatarUrl: string | null;
     issuer: string;
-    issueDate: string;
+    issueDate?: string | null;
+    expiryDate?: string | null;
+    certificateAvatarUrl?: string | null;
   };
 
   type BannerData = {

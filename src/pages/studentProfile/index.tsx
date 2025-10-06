@@ -44,6 +44,7 @@ import {
   AboutMeModal,
   AttachedFilesModal,
   BasicInfoModal,
+  CertificateModal,
   DesiredJobModal,
   LanguageModal,
   WorkExperienceModal,
@@ -75,9 +76,11 @@ const StudentProfile: React.FC = () => {
   const [isAboutMeOpen, setIsAboutMeOpen] = useState(false);
   const [isWorkExperienceOpen, setIsWorkExperienceOpen] = useState(false);
   const [isAttachedFilesOpen, setIsAttachedFilesOpen] = useState(false);
-  const [languageOpen, setLanguageOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [isCertificateOpen, setIsCertificateOpen] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState<string>('CV Hà Ngọc Tú.pdf');
+  const [editingCertificate, setEditingCertificate] = useState<StudentModule.CertificateItem>();
 
   // ✅ Fetch all profile data
   useEffect(() => {
@@ -93,7 +96,7 @@ const StudentProfile: React.FC = () => {
           certificatesData,
           jobBannerData,
           experiencesRes,
-          languagesData, // ← add here
+          languagesData,
         ] = await Promise.all([
           fetchStudentBanner(id),
           fetchStudentSkills(id),
@@ -103,7 +106,7 @@ const StudentProfile: React.FC = () => {
           fetchStudentCertificates(id),
           fetchStudentJobBanner(id),
           fetchStudentExperiences(id, { current: 1, pageSize: 5 }),
-          fetchStudentLanguages(id), // ← new fetch
+          fetchStudentLanguages(id),
         ]);
 
         // ✅ set the new data
@@ -519,7 +522,7 @@ const StudentProfile: React.FC = () => {
                 extra={
                   <Button
                     type="text"
-                    icon={<PlusOutlined onClick={() => setLanguageOpen(true)} />}
+                    icon={<PlusOutlined onClick={() => setIsLanguageOpen(true)} />}
                   />
                 }
               >
@@ -538,43 +541,88 @@ const StudentProfile: React.FC = () => {
               </Card>
 
               <LanguageModal
-                open={languageOpen}
-                onCancel={() => setLanguageOpen(false)}
+                open={isLanguageOpen}
+                onCancel={() => setIsLanguageOpen(false)}
                 onSubmit={(values) => {
                   console.log('Language saved:', values);
-                  setLanguageOpen(false);
+                  setIsLanguageOpen(false);
                 }}
               />
 
               {/* Certificates */}
+              {/* Certificates */}
               <Card
                 title="Bằng cấp & Chứng chỉ"
-                extra={<Button type="text" icon={<PlusOutlined />} />}
+                extra={
+                  <Button
+                    type="text"
+                    icon={<PlusOutlined />}
+                    onClick={() => {
+                      setEditingCertificate(undefined);
+                      setIsCertificateOpen(true);
+                    }}
+                  />
+                }
               >
-                <List
-                  itemLayout="horizontal"
-                  dataSource={certificates}
-                  renderItem={(item) => (
-                    <List.Item
-                      actions={[
-                        <Button type="link" key="view">
-                          Xem
-                        </Button>,
-                      ]}
-                    >
-                      <List.Item.Meta
-                        avatar={
-                          item.certificateAvatarUrl && (
-                            <Avatar src={item.certificateAvatarUrl} shape="square" />
-                          )
-                        }
-                        title={item.certificateName}
-                        description={`${item.issuer} · ${item.issueDate}`}
-                      />
-                    </List.Item>
-                  )}
-                />
+                {certificates?.length ? (
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={certificates}
+                    renderItem={(item) => (
+                      <List.Item
+                        actions={[
+                          <Button
+                            type="link"
+                            key="edit"
+                            onClick={() => {
+                              setEditingCertificate(item);
+                              setIsCertificateOpen(true);
+                            }}
+                          >
+                            Sửa
+                          </Button>,
+                          <Button type="link" key="view">
+                            Xem
+                          </Button>,
+                        ]}
+                      >
+                        <List.Item.Meta
+                          avatar={
+                            item.certificateAvatarUrl && (
+                              <Avatar src={item.certificateAvatarUrl} shape="square" />
+                            )
+                          }
+                          title={item.certificateName}
+                          description={`${item.issuer} · ${item.issueDate || '-'}`}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                ) : (
+                  <Text type="secondary">Chưa có thông tin bằng cấp & chứng chỉ</Text>
+                )}
               </Card>
+
+              <CertificateModal
+                open={isCertificateOpen}
+                onCancel={() => setIsCertificateOpen(false)}
+                initialValues={editingCertificate}
+                onSubmit={(values) => {
+                  if (editingCertificate) {
+                    // 🛠️ Edit existing certificate
+                    setCertificates((prev) =>
+                      prev.map((c) => (c.id === editingCertificate.id ? { ...c, ...values } : c)),
+                    );
+                  } else {
+                    // 🛠️ Add new certificate
+                    setCertificates((prev) => [
+                      ...prev,
+                      { ...values, id: Date.now() } as StudentModule.CertificateItem,
+                    ]);
+                  }
+                  setIsCertificateOpen(false);
+                }}
+              />
             </Space>
           )}
 
