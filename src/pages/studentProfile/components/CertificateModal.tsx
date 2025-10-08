@@ -18,7 +18,9 @@ const CertificateModal: React.FC<{
       form.setFieldsValue({
         ...initialValues,
         issuedDate: initialValues.issueDate ? dayjs(initialValues.issueDate) : undefined,
-        expiryDate: initialValues.expiryDate ? dayjs(initialValues.expiryDate) : undefined,
+        expirationDate: initialValues.expirationDate
+          ? dayjs(initialValues.expirationDate)
+          : undefined,
       });
     } else {
       form.resetFields();
@@ -30,7 +32,7 @@ const CertificateModal: React.FC<{
       ...initialValues,
       ...values,
       issuedDate: values.issuedDate?.format('YYYY-MM'),
-      expiryDate: values.expiryDate?.format('YYYY-MM'),
+      expirationDate: values.expirationDate?.format('YYYY-MM'),
     };
     onSubmit(formattedValues);
   };
@@ -71,7 +73,7 @@ const CertificateModal: React.FC<{
             <DatePicker picker="month" placeholder="mm/yyyy" style={{ width: '100%' }} />
           </Form.Item>
 
-          <Form.Item name="expiryDate" label="Ngày hết hạn" style={{ flex: 1 }}>
+          <Form.Item name="expirationDate" label="Ngày hết hạn" style={{ flex: 1 }}>
             <DatePicker picker="month" placeholder="mm/yyyy" style={{ width: '100%' }} />
           </Form.Item>
         </Space>

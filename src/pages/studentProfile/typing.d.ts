@@ -40,7 +40,7 @@ declare namespace StudentModule {
     certificateName: string;
     issuer: string;
     issueDate?: string | null;
-    expiryDate?: string | null;
+    expirationDate?: string | null;
     certificateAvatarUrl?: string | null;
   };
 
