@@ -4,6 +4,8 @@ import { request } from '@umijs/max';
 const target = '/students';
 const prefix = GLOBAL_PREFIX + target;
 
+//#region GET
+
 /**
  * Fetch student's banner data (basic info)
  */
@@ -97,3 +99,16 @@ export const fetchStudentLanguages = (id: string) =>
   request<Res<StudentModule.LanguageItem[]>>(prefix + `/${id}/languages`, {
     method: 'GET',
   }).then(({ data }) => data);
+
+//#endregion
+
+//#region PUT
+/**
+ * Update student's basic information
+ */
+export const updateStudentInfo = (id: string, payload: StudentModule.BannerData) =>
+  request<Res<void>>(prefix + `/${id}`, {
+    method: 'PUT',
+    data: payload,
+  });
+//#endregion
