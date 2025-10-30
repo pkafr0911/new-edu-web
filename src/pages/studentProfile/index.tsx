@@ -347,6 +347,7 @@ const StudentProfile: React.FC = () => {
               </Card>
 
               <AboutMeModal
+                id={id}
                 open={isAboutMeOpen}
                 onCancel={() => setIsAboutMeOpen(false)}
                 initialValue={description?.description}

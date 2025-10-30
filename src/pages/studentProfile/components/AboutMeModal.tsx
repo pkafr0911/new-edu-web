@@ -1,18 +1,26 @@
 import React from 'react';
-import { Modal, Form, Button } from 'antd';
+import { Modal, Form, Button, message } from 'antd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { updateStudentDescription } from '../service';
 
 const AboutMeModal: React.FC<{
+  id: string;
   open: boolean;
   onCancel: () => void;
   initialValue?: string;
-}> = ({ open, onCancel, initialValue }) => {
+}> = ({ open, onCancel, id, initialValue }) => {
   const [form] = Form.useForm();
 
-  const onSubmit = (values: any) => {
-    console.log('About me submitted:', values.aboutMe);
-    onCancel(); // close modal after submit
+  const onSubmit = async (values: any) => {
+    try {
+      await updateStudentDescription(id, values.description);
+      message.success('Cập nhật giới thiệu bản thân thành công');
+      onCancel();
+    } catch (error) {
+      console.error(error);
+      message.error('Cập nhật thất bại, vui lòng thử lại');
+    }
   };
 
   return (
@@ -28,10 +36,10 @@ const AboutMeModal: React.FC<{
         form={form}
         layout="vertical"
         onFinish={onSubmit}
-        initialValues={{ aboutMe: initialValue }}
+        initialValues={{ description: initialValue }}
       >
         <Form.Item
-          name="aboutMe"
+          name="description"
           rules={[{ required: true, message: 'Vui lòng nhập thông tin giới thiệu' }]}
         >
           <ReactQuill

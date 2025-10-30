@@ -111,4 +111,13 @@ export const updateStudentInfo = (id: string, payload: StudentModule.BannerData)
     method: 'PUT',
     data: payload,
   });
+
+/**
+ * Update student's description
+ */
+export const updateStudentDescription = (id: string, description: string) =>
+  request<Res<void>>(prefix + `/${id}/description`, {
+    method: 'PUT',
+    data: { description },
+  });
 //#endregion
